@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew Buddy Cafe | Menu</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            background: #24160e;
+            color: #302219;
+            overflow-x: hidden;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: -24px;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: transform 0.25s ease-out;
+        }
+
+        .bg-layer img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(56%) contrast(1.06);
+            transform: scale(1.04);
+            animation: slowKenBurns 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowKenBurns {
+            0% {
+                transform: scale(1.03) translate3d(0, 0, 0);
+            }
+            100% {
+                transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+            }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(
+                circle at center,
+                rgba(24, 14, 8, 0.44) 0%,
+                rgba(18, 10, 5, 0.86) 100%
+            );
+        }
+
+        .beans {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bean {
+            position: absolute;
+            top: -50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9a6946, #3b2215);
+            box-shadow: inset 0 1px 2px rgba(255, 225, 190, 0.25);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .bean::after {
+            content: "";
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            top: 15%;
+            left: 40%;
+            border-radius: 50%;
+            background: #c59b74;
+            transform: rotate(10deg);
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 16px;
+            left: 28px;
+            right: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            padding: 6px 16px 6px 8px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+        .brand-pill:hover {
+            background: rgba(65, 41, 26, 0.92);
+            transform: translateY(-1px);
+        }
+
+        .brand-pill img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.75);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 30px;
+            transition: 0.25s ease;
+        }
+
+        .navigation a:hover,
+        .navigation a.active {
+            background: rgba(243, 236, 227, 0.96);
+            color: #38251b;
+            transform: translateY(-1px);
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 5;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 110px 24px 60px;
+        }
+
+        .menu-header {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 34px;
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #f0cfa9;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .brand-label span {
+            width: 26px;
+            height: 1px;
+            background: #f0cfa9;
+        }
+
+        .menu-header h1 {
+            font-size: clamp(32px, 4.5vw, 50px);
+            line-height: 1.15;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-header p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 15px;
+            line-height: 1.65;
+            color: #efe4d8;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 34px;
+            animation: fadeUp 0.85s ease-out both;
+        }
+
+        .category-btn {
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: bold;
+            letter-spacing: 0.4px;
+            transition: 0.25s ease;
+        }
+
+        .category-btn:hover {
+            background: rgba(243, 236, 227, 0.85);
+            color: #38251b;
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: #f0cfa9;
+            color: #2b1a10;
+            border-color: #f0cfa9;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            animation: fadeUp 0.95s ease-out both;
+        }
+
+        .product-card {
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #eadfd3;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 40px rgba(12, 6, 3, 0.42);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 24px 50px rgba(12, 6, 3, 0.58);
+        }
+
+        .product-img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 11;
+            height: 225px;
+            background: #efe6dc;
+            overflow: hidden;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.04);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(42, 26, 16, 0.82);
+            backdrop-filter: blur(6px);
+            color: #f0cfa9;
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .product-info {
+            padding: 18px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-info h3 {
+            color: #39271d;
+            font-size: 18px;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .product-info p {
+            font-size: 13px;
+            color: #6e5a4d;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .product-bottom {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #e9dfd5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #563923;
+        }
+
+        .item-tag {
+            background: #f3ece3;
+            color: #765237;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 24px;
+            background: rgba(255, 253, 249, 0.94);
+            border: 1px solid #eadfd3;
+            border-radius: 20px;
+            color: #39271d;
+            box-shadow: 0 18px 40px rgba(12, 6, 3, 0.42);
+        }
+
+        .view-banner {
+            margin-top: 38px;
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 235, 210, 0.22);
+            border-radius: 20px;
+            padding: 26px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            color: #fff6ec;
+            animation: fadeUp 1.05s ease-out both;
+        }
+
+        .view-banner h3 {
+            font-size: 19px;
+            color: #f0cfa9;
+            margin-bottom: 4px;
+        }
+
+        .view-banner p {
+            font-size: 13.5px;
+            color: #e6d7c8;
+        }
+
+        .login-cta-btn {
+            text-decoration: none;
+            background: #f0cfa9;
+            color: #2b1a10;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            transition: 0.25s ease;
+        }
+
+        .login-cta-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .page-footer {
+            text-align: center;
+            margin-top: 32px;
+            color: rgba(240, 207, 169, 0.75);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .menu-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .product-img-wrap {
+                height: 200px;
+            }
+
+            .view-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .top-bar {
+                position: fixed;
+                top: 10px;
+                left: 12px;
+                right: 12px;
+                flex-direction: column;
+                gap: 8px;
+                padding: 0;
+            }
+
+            .brand-pill {
+                padding: 5px 14px 5px 7px;
+                font-size: 13px;
+            }
+
+            .brand-pill img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .navigation {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            .navigation a {
+                padding: 7px 11px;
+                font-size: 11px;
+            }
+
+            .page-wrapper {
+                padding-top: 128px;
+            }
+
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+
+            .product-img-wrap {
+                height: 225px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-layer" id="bgLayer">
+        <img src="img1.jpg" alt="Brew Buddy Cafe Background">
+    </div>
+    <div class="bg-overlay"></div>
+    <div class="beans" id="beansContainer"></div>
+
+    <header class="top-bar">
+        <a href="home.html" class="brand-pill" onclick="window.location.href='home.html'">
+            <img src="logo1-removebg-preview.png" alt="Brew Buddy Logo">
+            <span>Brew Buddy Cafe</span>
+        </a>
+
+        <nav class="navigation" aria-label="Primary Navigation">
+            <a href="home.html" onclick="window.location.href='home.html'">Home</a>
+            <a href="menu.html" class="active" onclick="window.location.href='menu.html'">Menu</a>
+            <a href="review.html" onclick="window.location.href='review.html'">Reviews</a>
+            <a href="about.html" onclick="window.location.href='about.html'">About</a>
+            <a href="login.html" onclick="window.location.href='login.html'">Log In</a>
+        </nav>
+    </header>
+
+    <main class="page-wrapper">
+
+        <section class="menu-header">
+            <div class="brand-label">
+                <span></span>
+                CRAFTED WITH CARE
+                <span></span>
+            </div>
+            <h1>Our Cafe Menu</h1>
+            <p>Discover your new favorite drink, freshly baked pastry, waffle, or sweet dessert.</p>
+        </section>
+
+        <div class="categories">
+            <button type="button" class="category-btn active" onclick="filterMenu('Desserts', this)">Desserts</button>
+            <button type="button" class="category-btn" onclick="filterMenu('Coffee', this)">Coffee</button>
+            <button type="button" class="category-btn" onclick="filterMenu('Frappe', this)">Frappe</button>
+            <button type="button" class="category-btn" onclick="filterMenu('Tea', this)">Tea</button>
+            <button type="button" class="category-btn" onclick="filterMenu('Waffles', this)">Waffles</button>
+            <button type="button" class="category-btn" onclick="filterMenu('Pastries', this)">Pastries</button>
+            <button type="button" class="category-btn" onclick="filterMenu('Sandwich', this)">Sandwich</button>
+        </div>
+
+        <section class="menu-container" id="menuContainer"></section>
+
+        <section class="view-banner">
+            <div>
+                <h3>Ready to place an order?</h3>
+                <p>You are currently viewing our menu. Log in to your Brew Buddy account to order.</p>
+            </div>
+            <a href="login.html" class="login-cta-btn" onclick="window.location.href='login.html'">Log In to Order</a>
+        </section>
+
+        <footer class="page-footer">
+            MADE WITH CARE AT BREW BUDDY CAFE • © 2026 ALL RIGHTS RESERVED
+        </footer>
+
+    </main>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Coffee Americano",
+                category: "Coffee",
+                description: "Refreshing iced coffee for your day.",
+                price: 120,
+                image: "cofee americano.jpg"
+            },
+            {
+                id: 2,
+                name: "Caramel Macchiato",
+                category: "Coffee",
+                description: "Rich espresso with creamy milk foam.",
+                price: 140,
+                image: "caramel macchiato.jpg"
+            },
+            {
+                id: 3,
+                name: "Cafe Latte",
+                category: "Coffee",
+                description: "A smooth and creamy coffee made with rich espresso and steamed milk.",
+                price: 150,
+                image: "cafe latte.png"
+            },
+            {
+                id: 4,
+                name: "Mocha",
+                category: "Coffee",
+                description: "A delicious combination of coffee and chocolate.",
+                price: 160,
+                image: "mocha.jpg"
+            },
+            {
+                id: 5,
+                name: "Matcha Cream Frappe",
+                category: "Frappe",
+                description: "Cold blended matcha drink with creamy texture.",
+                price: 170,
+                image: "matcha cream frappe.jpg"
+            },
+            {
+                id: 6,
+                name: "Java Chip Frappe",
+                category: "Frappe",
+                description: "Sweet and creamy java chip frappe.",
+                price: 175,
+                image: "java chip frappe.jpg"
+            },
+            {
+                id: 7,
+                name: "Taro Milk Tea",
+                category: "Tea",
+                description: "Creamy taro with a smooth taste.",
+                price: 150,
+                image: "taro milktea.jpg"
+            },
+            {
+                id: 8,
+                name: "Thai Milk Tea",
+                category: "Tea",
+                description: "Classic milk tea with a creamy flavor.",
+                price: 130,
+                image: "thai milktea.jpg"
+            },
+            {
+                id: 9,
+                name: "Tuna Mayo Melt",
+                category: "Sandwich",
+                description: "Delicious sandwich filled with tuna and mayonnaise.",
+                price: 110,
+                image: "tuna mayo melt.jpg"
+            },
+            {
+                id: 10,
+                name: "Bacon, Egg & Cheese Sandwich",
+                category: "Sandwich",
+                description: "Tasty sandwich with bacon, egg, and cheese.",
+                price: 100,
+                image: "bacon.jpg"
+            },
+            {
+                id: 11,
+                name: "Double Chocolate Muffin",
+                category: "Pastries",
+                description: "Moist chocolate muffin loaded with chocolate chips.",
+                price: 75,
+                image: "double chocolate muffins.webp"
+            },
+            {
+                id: 12,
+                name: "Croissant",
+                category: "Pastries",
+                description: "Flaky golden pastry with a buttery taste.",
+                price: 85,
+                image: "croissant.jpg"
+            },
+            {
+                id: 13,
+                name: "Chocolate Cake",
+                category: "Desserts",
+                description: "Delicious chocolate cake for dessert lovers.",
+                price: 120,
+                image: "chocolate cake.jpg"
+            },
+            {
+                id: 14,
+                name: "Blueberry Cheesecake",
+                category: "Desserts",
+                description: "Creamy cheesecake with blueberry topping.",
+                price: 145,
+                image: "blueberry cheesecake.jpg"
+            },
+            {
+                id: 15,
+                name: "Classic Waffle",
+                category: "Waffles",
+                description: "Crispy waffle served with sweet toppings.",
+                price: 110,
+                image: "classic waffle.jpg"
+            },
+            {
+                id: 16,
+                name: "Chocolate Waffle",
+                category: "Waffles",
+                description: "Delicious waffle with chocolate topping.",
+                price: 135,
+                image: "chocolate waffles.jpg"
+            },
+            {
+                id: 17,
+                name: "Brownies",
+                category: "Desserts",
+                description: "Rich and fudgy brownies.",
+                price: 145,
+                image: "brownies.jpg"
+            },
+            {
+                id: 18,
+                name: "Coconut Cream Dream Bar",
+                category: "Desserts",
+                description: "A tropical treat with a creamy coconut flavor.",
+                price: 145,
+                image: "coconut cream dream bar.webp"
+            },
+            {
+                id: 19,
+                name: "Cream Dream Pistachio",
+                category: "Desserts",
+                description: "Smooth pistachio with a rich, nutty flavor.",
+                price: 145,
+                image: "cream dream pistachio.jpg"
+            },
+            {
+                id: 20,
+                name: "Cookies",
+                category: "Desserts",
+                description: "Freshly baked cookies with a soft, sweet center.",
+                price: 125,
+                image: "cookies.jpg"
+            },
+            {
+                id: 21,
+                name: "Palmier",
+                category: "Pastries",
+                description: "Crispy, heart-shaped pastry with a sweet crunch.",
+                price: 85,
+                image: "palmier.jpeg"
+            },
+            {
+                id: 22,
+                name: "Cinnamon Roll",
+                category: "Pastries",
+                description: "Sweet cinnamon swirls with a soft, fluffy texture.",
+                price: 90,
+                image: "cinnamon rolls.png"
+            },
+            {
+                id: 23,
+                name: "Cream Puff",
+                category: "Pastries",
+                description: "Light pastry filled with smooth vanilla cream.",
+                price: 90,
+                image: "cream puff.jpeg"
+            },
+            {
+                id: 24,
+                name: "Strawberry Chocolate Cake",
+                category: "Desserts",
+                description: "Soft and delicious strawberry chocolate cake.",
+                price: 120,
+                image: "strawberry chocolate cake.webp"
+            },
+            {
+                id: 25,
+                name: "Cookies & Cream Frappe",
+                category: "Frappe",
+                description: "A refreshing blend of cookies and cream.",
+                price: 170,
+                image: "cookies & cream frappe.jpg"
+            },
+            {
+                id: 26,
+                name: "Strawberry Vanilla Frappe",
+                category: "Frappe",
+                description: "A refreshing blend of strawberries and vanilla.",
+                price: 170,
+                image: "strawberry vanilla frappe.webp"
+            },
+            {
+                id: 27,
+                name: "Iced Peach Fruit Tea",
+                category: "Tea",
+                description: "A refreshing blend of iced peaches and fruit flavors.",
+                price: 170,
+                image: "iced peach fruit tea.jpg"
+            },
+            {
+                id: 28,
+                name: "Lemon Hibiscus Tea",
+                category: "Tea",
+                description: "A refreshing blend of lemon and hibiscus flavors.",
+                price: 170,
+                image: "lemon hibiscus tea.jpg"
+            },
+            {
+                id: 29,
+                name: "Grilled Cheese Sandwich",
+                category: "Sandwich",
+                description: "Delicious sandwich filled with grilled chicken.",
+                price: 110,
+                image: "grilled cheese sandwich.jpg"
+            },
+            {
+                id: 30,
+                name: "Classic Cheese Cake",
+                category: "Desserts",
+                description: "Delicious cheese cake with a classic flavor.",
+                price: 110,
+                image: "classic cheese cake.jpg"
+            },
+            {
+                id: 31,
+                name: "Blueberry Muffin",
+                category: "Pastries",
+                description: "Delicious muffin filled with fresh blueberries.",
+                price: 90,
+                image: "blueberry muffin.jpg"
+            },
+            {
+                id: 32,
+                name: "Cheese Ensaymada",
+                category: "Pastries",
+                description: "Delicious pastry filled with cheese.",
+                price: 110,
+                image: "cheese ensaymada.jpg"
+            },
+            {
+                id: 33,
+                name: "Tiramisu",
+                category: "Desserts",
+                description: "Delicious Italian dessert with a creamy texture.",
+                price: 110,
+                image: "tiramisu.jpg"
+            },
+            {
+                id: 34,
+                name: "Choco Lava Cake",
+                category: "Desserts",
+                description: "Yummy chocolate cake with a molten center.",
+                price: 110,
+                image: "choco lava cake.jpg"
+            },
+            {
+                id: 35,
+                name: "Mango Graham Parfait",
+                category: "Desserts",
+                description: "Yummy mango-flavored parfait with a Graham cracker crust.",
+                price: 110,
+                image: "mango graham parfait.jpg"
+            },
+            {
+                id: 36,
+                name: "Affogato",
+                category: "Desserts",
+                description: "Yummy ice cream topped with hot espresso.",
+                price: 110,
+                image: "affogato.jpg"
+            },
+            {
+                id: 37,
+                name: "Vanilla Latte",
+                category: "Coffee",
+                description: "A smooth blend of espresso, fresh milk, and sweet vanilla syrup.",
+                price: 150,
+                image: "vanilla latte.jfif"
+            }
+        ];
+
+        function displayMenu(category) {
+            const container = document.getElementById("menuContainer");
+            container.innerHTML = "";
+
+            const filteredProducts = products.filter(product => product.category === category);
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-message">
+                        <h2>No products available.</h2>
+                        <p>Please check back later.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-img-wrap">
+                            <img src="${product.image}" alt="${product.name}">
+                            <span class="category-badge">${product.category}</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <div class="product-bottom">
+                                <span class="price">₱${product.price.toFixed(2)}</span>
+                                <span class="item-tag">Freshly Made</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterMenu(category, button) {
+            document.querySelectorAll(".category-btn").forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            displayMenu(category);
+        }
+
+        displayMenu("Desserts");
+    </script>
+
+    <script>
+        (function initMotion() {
+            var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (prefersReduced) return;
+
+            var beansContainer = document.getElementById("beansContainer");
+            var bgLayer = document.getElementById("bgLayer");
+
+            var beanCount = 14;
+            var beans = [];
+
+            for (var i = 0; i < beanCount; i++) {
+                var el = document.createElement("span");
+                el.className = "bean";
+                var size = 12 + Math.random() * 8;
+                el.style.width = size + "px";
+                el.style.height = (size * 1.5) + "px";
+                beansContainer.appendChild(el);
+
+                beans.push({
+                    el: el,
+                    x: Math.random() * 100,
+                    y: Math.random() * 110 - 10,
+                    speed: 0.045 + Math.random() * 0.055,
+                    swayOffset: Math.random() * Math.PI * 2,
+                    swaySpeed: 0.0015 + Math.random() * 0.0015,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() > 0.5 ? 1 : -1) * (0.3 + Math.random() * 0.6),
+                    maxOpacity: 0.22 + Math.random() * 0.22
+                });
+            }
+
+            var mouseX = 0;
+            var mouseY = 0;
+            var currentBgX = 0;
+            var currentBgY = 0;
+
+            document.addEventListener("mousemove", function (e) {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+            });
+
+            document.addEventListener("mouseleave", function () {
+                mouseX = 0;
+                mouseY = 0;
+            });
+
+            var lastTime = performance.now();
+
+            function animate(now) {
+                var dt = Math.min(now - lastTime, 50);
+                lastTime = now;
+
+                currentBgX += (-mouseX * 18 - currentBgX) * 0.06;
+                currentBgY += (-mouseY * 18 - currentBgY) * 0.06;
+                if (bgLayer) {
+                    bgLayer.style.transform = "translate3d(" + currentBgX.toFixed(2) + "px, " + currentBgY.toFixed(2) + "px, 0)";
+                }
+
+                for (var j = 0; j < beans.length; j++) {
+                    var b = beans[j];
+                    b.y += b.speed * (dt / 16.67);
+                    b.rot += b.rotSpeed * (dt / 16.67);
+
+                    if (b.y > 108) {
+                        b.y = -8;
+                        b.x = Math.random() * 100;
+                    }
+
+                    var sway = Math.sin(now * b.swaySpeed + b.swayOffset) * 14;
+                    var fade = 1;
+                    if (b.y < 10) fade = Math.max(0, b.y / 10);
+                    else if (b.y > 90) fade = Math.max(0, (108 - b.y) / 18);
+
+                    var opacity = (b.maxOpacity * fade).toFixed(3);
+                    var pxX = (b.x / 100) * window.innerWidth + sway;
+                    var pxY = (b.y / 100) * window.innerHeight;
+
+                    b.el.style.opacity = opacity;
+                    b.el.style.transform = "translate3d(" + pxX.toFixed(1) + "px, " + pxY.toFixed(1) + "px, 0) rotate(" + b.rot.toFixed(1) + "deg)";
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        })();
+    </script>
+
+</body>
+</html>

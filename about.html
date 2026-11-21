@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Brew Buddy Cafe | About Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            background: #24160e;
+            color: #302219;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: transform 0.25s ease-out;
+        }
+
+        .bg-layer img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(60%) contrast(1.06) saturate(1.08);
+            transform: scale(1.12);
+            animation: slowKenBurns 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowKenBurns {
+            0% {
+                transform: scale(1.1) translate3d(0, 0, 0);
+            }
+            100% {
+                transform: scale(1.16) translate3d(-1.5%, -1%, 0);
+            }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(
+                circle at center,
+                rgba(24, 14, 8, 0.34) 0%,
+                rgba(16, 9, 4, 0.8) 100%
+            );
+        }
+
+        .beans {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bean {
+            position: absolute;
+            top: -50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9a6946, #3b2215);
+            box-shadow: inset 0 1px 2px rgba(255, 225, 190, 0.25);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .bean::after {
+            content: "";
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            top: 15%;
+            left: 40%;
+            border-radius: 50%;
+            background: #c59b74;
+            transform: rotate(10deg);
+        }
+
+        .navigation {
+            position: fixed;
+            top: 16px;
+            left: 24px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .nav-brand {
+            pointer-events: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.68);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.28);
+            padding: 6px 15px 6px 8px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .nav-brand img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.68);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.28);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 9px 16px;
+            border-radius: 30px;
+            transition: 0.22s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #f6efe7;
+            color: #38251b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 4;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 72px 16px 32px;
+        }
+
+        .about-shell {
+            width: 100%;
+            max-width: 1020px;
+            padding: 28px 30px 24px;
+            background: rgba(255, 252, 248, 0.97);
+            backdrop-filter: blur(12px);
+            border: 1px solid #eadfd3;
+            border-radius: 24px;
+            box-shadow: 0 26px 65px rgba(10, 5, 2, 0.58);
+            animation: appear 0.65s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hero-banner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            padding: 34px 28px;
+            text-align: center;
+            color: #fff8f0;
+            background: linear-gradient(135deg, #4d2e1b 0%, #2a180d 100%);
+            box-shadow: 0 14px 32px rgba(42, 24, 12, 0.24);
+            margin-bottom: 22px;
+        }
+
+        .hero-logo {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 246, 234, 0.12);
+            border: 1px solid rgba(255, 224, 178, 0.28);
+            border-radius: 20px;
+        }
+
+        .hero-logo img {
+            width: 62px;
+            height: 62px;
+            object-fit: contain;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #ffcf66;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2.3px;
+            text-transform: uppercase;
+        }
+
+        .brand-label span {
+            width: 22px;
+            height: 1px;
+            background: rgba(255, 207, 102, 0.55);
+        }
+
+        .hero-banner h1 {
+            font-size: clamp(28px, 3.8vw, 42px);
+            letter-spacing: -0.7px;
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+
+        .hero-banner p {
+            max-width: 640px;
+            margin: 0 auto 18px;
+            font-size: 14.5px;
+            line-height: 1.7;
+            color: #efe1d2;
+        }
+
+        .hero-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hero-pill {
+            background: rgba(255, 244, 228, 0.14);
+            border: 1px solid rgba(255, 218, 165, 0.32);
+            color: #ffe3b5;
+            font-size: 11.5px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 999px;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 0.92fr 1.08fr;
+            gap: 20px;
+            align-items: stretch;
+            margin-bottom: 22px;
+        }
+
+        .story-image {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid #e6d8c8;
+            box-shadow: 0 12px 28px rgba(56, 37, 27, 0.14);
+            min-height: 290px;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+
+        .story-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .story-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #f7efe6;
+            border: 1px solid #e7d9ca;
+            border-radius: 18px;
+            padding: 24px 26px;
+        }
+
+        .section-eyebrow {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #987354;
+            margin-bottom: 5px;
+        }
+
+        .story-card h2 {
+            color: #39271d;
+            font-size: 24px;
+            letter-spacing: -0.4px;
+            margin-bottom: 12px;
+        }
+
+        .story-card p {
+            font-size: 14px;
+            line-height: 1.72;
+            color: #493629;
+            margin-bottom: 11px;
+        }
+
+        .highlights-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .highlight-box {
+            background: #ffffff;
+            border: 1px solid #e6d8c8;
+            border-radius: 11px;
+            padding: 10px 8px;
+            text-align: center;
+        }
+
+        .highlight-box strong {
+            display: block;
+            color: #563923;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .highlight-box span {
+            font-size: 10.5px;
+            color: #847366;
+        }
+
+        .video-panel {
+            background: #f7efe6;
+            border: 1px solid #e7d9ca;
+            border-radius: 18px;
+            padding: 22px 24px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .video-panel h2 {
+            color: #39271d;
+            font-size: 23px;
+            margin-bottom: 5px;
+        }
+
+        .video-panel > p {
+            color: #7d6c5f;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .video-frame {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 8px;
+            background: #ffffff;
+            border: 1px solid #e4d5c4;
+            border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(42, 24, 12, 0.14);
+        }
+
+        .video-frame video {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 11px;
+            display: block;
+            background: #2d1b10;
+        }
+
+        .video-frame video::-webkit-media-controls-overflow-button,
+        .video-frame video::-webkit-media-controls-fullscreen-button,
+        .video-frame video::-webkit-media-controls-toggle-closed-captions-button {
+            display: none !important;
+        }
+
+        #videoError {
+            font-size: 12px;
+            color: #774109;
+            margin-top: 6px;
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #eadfd3;
+            border-left: 5px solid #6b4423;
+            border-radius: 16px;
+            padding: 22px 24px;
+            box-shadow: 0 8px 22px rgba(56, 37, 27, 0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(56, 37, 27, 0.12);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6b4423, #4a2d16);
+            color: #ffcf66;
+            font-size: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-card h2 {
+            color: #39271d;
+            font-size: 20px;
+        }
+
+        .info-card p {
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: #493629;
+        }
+
+        .cta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, #4b2f1d 0%, #2d1b10 100%);
+            color: #fff8f0;
+            border-radius: 16px;
+            padding: 16px 22px;
+        }
+
+        .cta-bar strong {
+            display: block;
+            font-size: 15px;
+            color: #ffcf66;
+            margin-bottom: 2px;
+        }
+
+        .cta-bar span {
+            font-size: 12px;
+            color: #e6d5c3;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 10px 18px;
+            border-radius: 9px;
+            transition: 0.2s ease;
+        }
+
+        .cta-btn.primary {
+            background: #ffcf66;
+            color: #2d1b10;
+        }
+
+        .cta-btn.primary:hover {
+            background: #ffe094;
+            transform: translateY(-1px);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff8f0;
+            border: 1px solid rgba(255, 235, 210, 0.3);
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.24);
+        }
+
+        .card-footer {
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #ece1d5;
+            color: #9e8f82;
+            font-size: 10.5px;
+            letter-spacing: 0.6px;
+        }
+
+        @media (max-width: 820px) {
+            .story-grid,
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+
+            .story-image {
+                min-height: 240px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navigation {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-links a {
+                flex: 1;
+                text-align: center;
+                padding: 8px 10px;
+                font-size: 11.5px;
+            }
+
+            .page-wrapper {
+                padding: 96px 10px 22px;
+            }
+
+            .about-shell {
+                padding: 16px 14px 16px;
+                border-radius: 18px;
+            }
+
+            .hero-banner {
+                padding: 24px 16px;
+            }
+
+            .story-card,
+            .video-panel,
+            .info-card {
+                padding: 18px 16px;
+            }
+
+            .highlights-row {
+                grid-template-columns: 1fr;
+            }
+
+            .video-frame video {
+                aspect-ratio: auto;
+            }
+
+            .cta-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-layer" id="bgLayer">
+        <img src="img1.jpg" alt="Brew Buddy Cafe Background">
+    </div>
+    <div class="bg-overlay"></div>
+
+    <div class="beans" id="beansContainer"></div>
+
+    <nav class="navigation" aria-label="Primary Navigation">
+        <a href="home.html" class="nav-brand">
+            <img src="logo1-removebg-preview.png" alt="Brew Buddy Cafe Logo">
+            <span>Brew Buddy Cafe</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="review.html">Reviews</a>
+            <a href="about.html" class="active">About</a>
+            <a href="home.html">Home</a>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <main class="about-shell">
+            <section class="hero-banner">
+                <div class="hero-logo">
+                    <img src="logo1-removebg-preview.png" alt="Brew Buddy Cafe Emblem">
+                </div>
+                <div class="brand-label">
+                    <span></span>
+                    OUR STORY &amp; CRAFT
+                    <span></span>
+                </div>
+                <h1>About Brew Buddy Cafe</h1>
+                <p>
+                    Your daily dose of happiness is just one cup away! Enjoy your favorite coffee
+                    and make every moment special with Brew Buddy Cafe — Sip Good, Feel Good! ✨
+                </p>
+                <div class="hero-pills">
+                    <span class="hero-pill">🫘 Freshly Brewed</span>
+                    <span class="hero-pill">🤎 Cozy Hangout</span>
+                    <span class="hero-pill">✨ Crafted With Love</span>
+                </div>
+            </section>
+
+            <section class="story-grid">
+                <div class="story-image">
+                    <img src="img2.webp" alt="Brew Buddy Cafe Interior">
+                </div>
+
+                <div class="story-card">
+                    <div>
+                        <span class="section-eyebrow">Welcome</span>
+                        <h2>Welcome to Brew Buddy Cafe!</h2>
+                        <p>
+                            Brew Buddy Cafe is a cozy place for coffee lovers who want to enjoy
+                            delicious drinks and relaxing moments. We believe that coffee is more
+                            than just a drink — it brings people together and makes ordinary
+                            moments special.
+                        </p>
+                        <p>
+                            Our cafe offers a variety of coffee and refreshing beverages prepared
+                            with care. Whether you are spending time with friends, studying, or
+                            simply taking a break, Brew Buddy Cafe is always ready to be part of
+                            your day.
+                        </p>
+                    </div>
+
+                    <div class="highlights-row">
+                        <div class="highlight-box">
+                            <strong>Quality Beans</strong>
+                            <span>Smooth &amp; rich</span>
+                        </div>
+                        <div class="highlight-box">
+                            <strong>Cozy Space</strong>
+                            <span>Study &amp; unwind</span>
+                        </div>
+                        <div class="highlight-box">
+                            <strong>Friendly Crew</strong>
+                            <span>Served with care</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="video-panel">
+                <span class="section-eyebrow">Behind The Counter</span>
+                <h2>Behind Every Cup</h2>
+                <p>Take a look at how coffee is prepared and made with love at Brew Buddy Cafe.</p>
+
+                <div class="video-frame">
+                    <video
+                        id="coffeeVideo"
+                        width="100%"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        controls
+                        controlsList="nofullscreen nodownload noplaybackrate"
+                        disablePictureInPicture
+                        preload="auto">
+                        <source src="video.mp4" type="video/mp4">
+                    </video>
+                    <p id="videoError"></p>
+                </div>
+            </section>
+
+            <section class="mission-vision">
+                <div class="info-card">
+                    <div class="card-top">
+                        <span class="card-icon">☕</span>
+                        <h2>Our Mission</h2>
+                    </div>
+                    <p>
+                        To serve quality coffee and beverages while providing a comfortable and
+                        welcoming experience for every customer.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-top">
+                        <span class="card-icon">🌟</span>
+                        <h2>Our Vision</h2>
+                    </div>
+                    <p>
+                        To become a favorite coffee destination where people can enjoy great coffee,
+                        build connections, and create memorable experiences.
+                    </p>
+                </div>
+            </section>
+
+            <section class="cta-bar">
+                <div>
+                    <strong>Every cup tells a story. Make yours special.</strong>
+                    <span>See what fellow coffee lovers are saying or head back to the cafe home.</span>
+                </div>
+                <div class="cta-actions">
+                    <a href="review.html" class="cta-btn primary">Read &amp; Write Reviews</a>
+                    <a href="Login.html" class="cta-btn secondary">Member Login</a>
+                </div>
+            </section>
+
+            <div class="card-footer">
+                © 2026 BREW BUDDY CAFE • ALL RIGHTS RESERVED
+            </div>
+        </main>
+    </div>
+
+    <script>
+        (function initAboutPage() {
+            var video = document.getElementById("coffeeVideo");
+            var videoError = document.getElementById("videoError");
+            if (video) {
+                video.muted = true;
+                var playPromise = video.play();
+                if (playPromise && typeof playPromise.catch === "function") {
+                    playPromise.catch(function () {
+                        // Browser may require user interaction; controls remain available
+                    });
+                }
+
+                if (videoError) {
+                    video.addEventListener("error", function () {
+                        videoError.textContent = "Video preview unavailable — make sure video.mp4 is in your project folder.";
+                    });
+                }
+            }
+
+            var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (prefersReduced) return;
+
+            var beansContainer = document.getElementById("beansContainer");
+            var bgLayer = document.getElementById("bgLayer");
+
+            var beanCount = 14;
+            var beans = [];
+
+            if (beansContainer) {
+                for (var i = 0; i < beanCount; i++) {
+                    var el = document.createElement("span");
+                    el.className = "bean";
+                    var size = 12 + Math.random() * 8;
+                    el.style.width = size + "px";
+                    el.style.height = (size * 1.5) + "px";
+                    beansContainer.appendChild(el);
+
+                    beans.push({
+                        el: el,
+                        x: Math.random() * 100,
+                        y: Math.random() * 110 - 10,
+                        speed: 0.045 + Math.random() * 0.055,
+                        swayOffset: Math.random() * Math.PI * 2,
+                        swaySpeed: 0.0015 + Math.random() * 0.0015,
+                        rot: Math.random() * 360,
+                        rotSpeed: (Math.random() > 0.5 ? 1 : -1) * (0.3 + Math.random() * 0.6),
+                        maxOpacity: 0.22 + Math.random() * 0.22
+                    });
+                }
+            }
+
+            var mouseX = 0;
+            var mouseY = 0;
+            var currentBgX = 0;
+            var currentBgY = 0;
+
+            document.addEventListener("mousemove", function (e) {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+            });
+
+            document.addEventListener("mouseleave", function () {
+                mouseX = 0;
+                mouseY = 0;
+            });
+
+            var lastTime = performance.now();
+
+            function animate(now) {
+                var dt = Math.min(now - lastTime, 50);
+                lastTime = now;
+
+                currentBgX += (-mouseX * 18 - currentBgX) * 0.06;
+                currentBgY += (-mouseY * 18 - currentBgY) * 0.06;
+                if (bgLayer) {
+                    bgLayer.style.transform = "translate3d(" + currentBgX.toFixed(2) + "px, " + currentBgY.toFixed(2) + "px, 0)";
+                }
+
+                for (var j = 0; j < beans.length; j++) {
+                    var b = beans[j];
+                    b.y += b.speed * (dt / 16.67);
+                    b.rot += b.rotSpeed * (dt / 16.67);
+
+                    if (b.y > 108) {
+                        b.y = -8;
+                        b.x = Math.random() * 100;
+                    }
+
+                    var sway = Math.sin(now * b.swaySpeed + b.swayOffset) * 14;
+                    var fade = 1;
+                    if (b.y < 10) fade = Math.max(0, b.y / 10);
+                    else if (b.y > 90) fade = Math.max(0, (108 - b.y) / 18);
+
+                    var opacity = (b.maxOpacity * fade).toFixed(3);
+                    var pxX = (b.x / 100) * window.innerWidth + sway;
+                    var pxY = (b.y / 100) * window.innerHeight;
+
+                    b.el.style.opacity = opacity;
+                    b.el.style.transform = "translate3d(" + pxX.toFixed(1) + "px, " + pxY.toFixed(1) + "px, 0) rotate(" + b.rot.toFixed(1) + "deg)";
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        })();
+    </script>
+
+</body>
+
+</html>

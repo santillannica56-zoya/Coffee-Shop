@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Brew Buddy Cafe | Reviews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            background: #24160e;
+            color: #302219;
+            overflow-x: hidden;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: transform 0.25s ease-out;
+        }
+
+        .bg-layer img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(62%) contrast(1.06) saturate(1.08);
+            transform: scale(1.12);
+            animation: slowKenBurns 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowKenBurns {
+            0% {
+                transform: scale(1.1) translate3d(0, 0, 0);
+            }
+            100% {
+                transform: scale(1.16) translate3d(-1.5%, -1%, 0);
+            }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(
+                circle at center,
+                rgba(24, 14, 8, 0.35) 0%,
+                rgba(18, 10, 5, 0.78) 100%
+            );
+        }
+
+        .beans {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bean {
+            position: absolute;
+            top: -50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9a6946, #3b2215);
+            box-shadow: inset 0 1px 2px rgba(255, 225, 190, 0.25);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .bean::after {
+            content: "";
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            top: 15%;
+            left: 40%;
+            border-radius: 50%;
+            background: #c59b74;
+            transform: rotate(10deg);
+        }
+
+        .navigation {
+            position: fixed;
+            top: 18px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.28);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 9px 15px;
+            border-radius: 30px;
+            transition: 0.25s ease;
+        }
+
+        .navigation a:hover {
+            background: #f6efe7;
+            color: #38251b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 4;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 68px 16px 28px;
+        }
+
+        .review-container {
+            width: 100%;
+            max-width: 700px;
+            padding: 26px 30px;
+            background: rgba(255, 252, 248, 0.97);
+            backdrop-filter: blur(12px);
+            border: 1px solid #eadfd3;
+            border-radius: 22px;
+            box-shadow: 0 24px 60px rgba(10, 5, 2, 0.55);
+            animation: appear 0.6s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .brand-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            color: #987354;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2.2px;
+            text-transform: uppercase;
+        }
+
+        .brand-label span {
+            width: 22px;
+            height: 1px;
+            background: #c9a98a;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .logo img {
+            width: 74px;
+            height: 74px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(56, 37, 27, 0.14));
+        }
+
+        h1 {
+            color: #39271d;
+            text-align: center;
+            font-size: 27px;
+            letter-spacing: -0.6px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #877567;
+            font-size: 12.5px;
+            margin-bottom: 16px;
+        }
+
+        .summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: linear-gradient(135deg, #4b2f1d 0%, #2d1b10 100%);
+            color: #fff8f0;
+            border-radius: 16px;
+            padding: 16px 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 24px rgba(45, 27, 16, 0.22);
+        }
+
+        .summary-score {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .average {
+            font-size: 38px;
+            font-weight: bold;
+            color: #ffcf66;
+            line-height: 1;
+        }
+
+        .gold {
+            color: #f0b429;
+            font-size: 20px;
+            letter-spacing: 2px;
+            line-height: 1.15;
+        }
+
+        #totalReviews {
+            font-size: 12px;
+            color: #e6d5c3;
+            margin-top: 3px;
+        }
+
+        .summary-badge {
+            background: rgba(255, 240, 214, 0.14);
+            border: 1px solid rgba(255, 215, 150, 0.3);
+            color: #ffe3b3;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .section-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #4b3323;
+            font-size: 17px;
+        }
+
+        .filter-pills {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #f5ede3;
+            color: #5c3e28;
+            border: 1px solid #dfd1c2;
+            border-radius: 999px;
+            padding: 5px 11px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background: #eadccf;
+        }
+
+        .filter-btn.active {
+            background: #563923;
+            color: #fff;
+            border-color: #563923;
+        }
+
+        #reviewList {
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 18px;
+        }
+
+        #reviewList::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #reviewList::-webkit-scrollbar-thumb {
+            background: #d2bfa9;
+            border-radius: 999px;
+        }
+
+        .review-card {
+            background-color: #ffffff;
+            padding: 13px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ece1d5;
+            border-left: 4px solid #774109;
+            box-shadow: 0 4px 12px rgba(56, 37, 27, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: cardSlideIn 0.32s ease;
+        }
+
+        .review-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .review-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(56, 37, 27, 0.09);
+        }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 3px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5a2b, #4a2c18);
+            color: #fff6ea;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .review-card h3 {
+            color: #39271d;
+            font-size: 14px;
+        }
+
+        .review-card .gold {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .review-card p {
+            text-align: left;
+            color: #493629;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .date {
+            font-size: 11px;
+            color: #968678;
+            white-space: nowrap;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 18px;
+            color: #7d6c5f;
+            font-size: 12.5px;
+            background-color: #faf5ef;
+            border: 1px dashed #d8c7b6;
+            border-radius: 12px;
+        }
+
+        .review-form {
+            background-color: #f6efe7;
+            border: 1px solid #e6d9ca;
+            padding: 18px 20px;
+            border-radius: 16px;
+        }
+
+        .form-subtitle {
+            color: #847366;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #493629;
+            margin-bottom: 5px;
+        }
+
+        .label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .char-count {
+            font-size: 11px;
+            color: #8d7c6e;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            border: 1px solid #dfd3c7;
+            border-radius: 9px;
+            background: #fff;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            color: #39271d;
+            transition: 0.22s ease;
+        }
+
+        input[type="text"] {
+            height: 41px;
+        }
+
+        textarea {
+            height: 82px;
+            resize: none;
+            margin-bottom: 12px;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #805638;
+            box-shadow: 0 0 0 3px rgba(128, 86, 56, 0.14);
+        }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            width: fit-content;
+        }
+
+        .stars input {
+            display: none;
+        }
+
+        .stars label {
+            font-size: 28px;
+            color: #cbbba9;
+            cursor: pointer;
+            margin-right: 4px;
+            line-height: 1;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .stars label:hover {
+            transform: scale(1.15);
+        }
+
+        .stars label:hover,
+        .stars label:hover ~ label,
+        .stars input:checked ~ label {
+            color: #e5a920;
+        }
+
+        .rating-hint {
+            font-size: 11.5px;
+            font-weight: bold;
+            color: #774109;
+            background: #efe3d5;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .submit-btn {
+            flex: 1;
+            height: 43px;
+            background: linear-gradient(135deg, #6b4423, #4a2d16);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            font-size: 12.5px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: 0.22s ease;
+        }
+
+        .submit-btn:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(56, 37, 27, 0.25);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 43px;
+            padding: 0 18px;
+            background-color: #fff;
+            color: #62452f;
+            border: 1px solid #bca58f;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            transition: 0.22s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #e9dfd3;
+            border-color: #62452f;
+        }
+
+        .card-footer {
+            text-align: center;
+            margin-top: 14px;
+            color: #9e8f82;
+            font-size: 10px;
+            letter-spacing: 0.8px;
+        }
+
+        @media (max-width: 600px) {
+            .navigation {
+                top: 12px;
+                right: 0;
+                left: 0;
+                justify-content: center;
+            }
+
+            .navigation a {
+                padding: 8px 13px;
+                font-size: 11px;
+            }
+
+            .page-wrapper {
+                padding: 62px 12px 22px;
+            }
+
+            .review-container {
+                padding: 20px 16px;
+                border-radius: 18px;
+            }
+
+            .summary {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 14px 16px;
+            }
+
+            .review-form {
+                padding: 15px 14px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-layer" id="bgLayer">
+        <img src="img1.jpg" alt="Brew Buddy Cafe Background">
+    </div>
+    <div class="bg-overlay"></div>
+
+    <div class="beans" id="beansContainer"></div>
+
+    <nav class="navigation" aria-label="Primary Navigation">
+        <a href="login.html">Back to Login</a>
+        <a href="About.html">About Us</a>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="review-container">
+            <div class="brand-label">
+                <span></span>
+                BREW BUDDY CAFE
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <img src="logo1-removebg-preview.png" alt="Brew Buddy Cafe Logo">
+            </div>
+
+            <h1>Customer Reviews</h1>
+            <p class="subtitle">Freshly brewed stories and feedback from our coffee lovers.</p>
+
+            <div class="summary">
+                <div class="summary-score">
+                    <div class="average" id="average">0.0</div>
+                    <div>
+                        <div class="gold" id="averageStars">☆☆☆☆☆</div>
+                        <p id="totalReviews">No reviews yet</p>
+                    </div>
+                </div>
+                <div class="summary-badge" id="vibeBadge">☕ Share Your Sip</div>
+            </div>
+
+            <div class="section-bar">
+                <h2>What Our Customers Say</h2>
+                <div class="filter-pills" id="filterPills" role="group" aria-label="Filter reviews by rating">
+                    <button type="button" class="filter-btn active" data-filter="all">All</button>
+                    <button type="button" class="filter-btn" data-filter="5">5 ★</button>
+                    <button type="button" class="filter-btn" data-filter="4">4 ★</button>
+                    <button type="button" class="filter-btn" data-filter="3">3 ★</button>
+                    <button type="button" class="filter-btn" data-filter="low">1–2 ★</button>
+                </div>
+            </div>
+
+            <div id="reviewList">
+                <div class="empty">
+                    No reviews yet. Be the first to share your experience!
+                </div>
+            </div>
+
+            <div class="review-form">
+                <h2>Write a Review</h2>
+                <p class="form-subtitle">Tell us about your favorite drink, pastry, or cozy corner.</p>
+
+                <form id="reviewForm">
+                    <label class="field-label" for="customerName">Full Name</label>
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Enter your name"
+                        maxlength="60"
+                        required
+                    >
+
+                    <div class="label-row">
+                        <label class="field-label" style="margin-bottom:0;">Rate Your Experience</label>
+                    </div>
+                    <div class="rating-row">
+                        <div class="stars" id="starGroup">
+                            <input type="radio" name="rating" id="star5" value="5" required>
+                            <label for="star5" title="5 stars">★</label>
+
+                            <input type="radio" name="rating" id="star4" value="4">
+                            <label for="star4" title="4 stars">★</label>
+
+                            <input type="radio" name="rating" id="star3" value="3">
+                            <label for="star3" title="3 stars">★</label>
+
+                            <input type="radio" name="rating" id="star2" value="2">
+                            <label for="star2" title="2 stars">★</label>
+
+                            <input type="radio" name="rating" id="star1" value="1">
+                            <label for="star1" title="1 star">★</label>
+                        </div>
+                        <span class="rating-hint" id="ratingHint">Select stars</span>
+                    </div>
+
+                    <div class="label-row">
+                        <label class="field-label" for="message" style="margin-bottom:0;">Your Review</label>
+                        <span class="char-count" id="charCount">0 / 300</span>
+                    </div>
+                    <textarea
+                        id="message"
+                        placeholder="Share your experience..."
+                        maxlength="300"
+                        required
+                    ></textarea>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">
+                            SUBMIT REVIEW
+                        </button>
+                        <a href="login.html" class="back-btn">
+                            Back to Login
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-footer">
+                MADE WITH CARE AT BREW BUDDY CAFE
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var reviews = JSON.parse(
+            localStorage.getItem("brewBuddyReviews") || "[]"
+        );
+        var activeFilter = "all";
+
+        var ratingLabels = {
+            5: "☕ 5/5 — Pure Perfection",
+            4: "✨ 4/5 — Great Brew",
+            3: "🙂 3/5 — Nice & Cozy",
+            2: "🌱 2/5 — Room to Grow",
+            1: "💬 1/5 — Needs Attention"
+        };
+
+        function getInitials(name) {
+            var parts = (name || "BB").trim().split(/\s+/);
+            return ((parts[0] && parts[0][0]) || "") + ((parts[1] && parts[1][0]) || "");
+        }
+
+        function matchesFilter(ratingVal) {
+            var num = Number(ratingVal);
+            if (activeFilter === "all") return true;
+            if (activeFilter === "low") return num <= 2;
+            return num === Number(activeFilter);
+        }
+
+        function displayReviews() {
+            var list = document.getElementById("reviewList");
+            var average = document.getElementById("average");
+            var total = document.getElementById("totalReviews");
+            var averageStars = document.getElementById("averageStars");
+            var vibeBadge = document.getElementById("vibeBadge");
+
+            list.innerHTML = "";
+
+            if (reviews.length === 0) {
+                list.innerHTML =
+                    '<div class="empty">No reviews yet. Be the first to share your experience!</div>';
+                average.innerHTML = "0.0";
+                averageStars.innerHTML = "☆☆☆☆☆";
+                total.innerHTML = "No reviews yet";
+                vibeBadge.textContent = "☕ Share Your Sip";
+                return;
+            }
+
+            var sum = 0;
+            reviews.forEach(function(review) {
+                sum += Number(review.rating);
+            });
+
+            var result = sum / reviews.length;
+            average.textContent = result.toFixed(1);
+            averageStars.textContent =
+                "★".repeat(Math.round(result)) +
+                "☆".repeat(5 - Math.round(result));
+            total.textContent =
+                reviews.length + (reviews.length === 1 ? " Customer Review" : " Customer Reviews");
+
+            if (result >= 4.5) {
+                vibeBadge.textContent = "🌟 Fan Favorite Roast";
+            } else if (result >= 3.5) {
+                vibeBadge.textContent = "☕ Cozy Cafe Pick";
+            } else {
+                vibeBadge.textContent = "💬 We Value Feedback";
+            }
+
+            var filtered = reviews.filter(function(review) {
+                return matchesFilter(review.rating);
+            });
+
+            if (filtered.length === 0) {
+                list.innerHTML =
+                    '<div class="empty">No reviews match this star filter yet.</div>';
+                return;
+            }
+
+            filtered.forEach(function(review) {
+                var card = document.createElement("div");
+                card.className = "review-card";
+
+                var header = document.createElement("div");
+                header.className = "review-header";
+
+                var reviewerInfo = document.createElement("div");
+                reviewerInfo.className = "reviewer-info";
+
+                var avatar = document.createElement("span");
+                avatar.className = "avatar";
+                avatar.textContent = getInitials(review.name).toUpperCase() || "BB";
+
+                var name = document.createElement("h3");
+                name.textContent = review.name;
+
+                reviewerInfo.appendChild(avatar);
+                reviewerInfo.appendChild(name);
+
+                var date = document.createElement("span");
+                date.className = "date";
+                date.textContent = review.date;
+
+                header.appendChild(reviewerInfo);
+                header.appendChild(date);
+
+                var stars = document.createElement("div");
+                stars.className = "gold";
+                stars.textContent =
+                    "★".repeat(Number(review.rating)) +
+                    "☆".repeat(5 - Number(review.rating));
+
+                var message = document.createElement("p");
+                message.textContent = review.message;
+
+                card.appendChild(header);
+                card.appendChild(stars);
+                card.appendChild(message);
+
+                list.appendChild(card);
+            });
+        }
+
+        document.querySelectorAll(".filter-btn").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                document.querySelectorAll(".filter-btn").forEach(function(b) {
+                    b.classList.remove("active");
+                });
+                btn.classList.add("active");
+                activeFilter = btn.getAttribute("data-filter");
+                displayReviews();
+            });
+        });
+
+        var ratingInputs = document.querySelectorAll('input[name="rating"]');
+        var ratingHint = document.getElementById("ratingHint");
+        ratingInputs.forEach(function(input) {
+            input.addEventListener("change", function() {
+                ratingHint.textContent = ratingLabels[input.value] || "Select stars";
+            });
+        });
+
+        var messageInput = document.getElementById("message");
+        var charCount = document.getElementById("charCount");
+        messageInput.addEventListener("input", function() {
+            charCount.textContent = messageInput.value.length + " / 300";
+        });
+
+        document.getElementById("reviewForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var name = document.getElementById("customerName").value.trim();
+            var rating = document.querySelector('input[name="rating"]:checked');
+            var message = messageInput.value.trim();
+
+            if (!name || !rating || !message) {
+                alert("Please complete all fields.");
+                return;
+            }
+
+            var newReview = {
+                name: name,
+                rating: Number(rating.value),
+                message: message,
+                date: new Date().toLocaleDateString()
+            };
+
+            reviews.unshift(newReview);
+
+            localStorage.setItem(
+                "brewBuddyReviews",
+                JSON.stringify(reviews)
+            );
+
+            activeFilter = "all";
+            document.querySelectorAll(".filter-btn").forEach(function(b) {
+                b.classList.toggle("active", b.getAttribute("data-filter") === "all");
+            });
+
+            displayReviews();
+            alert("Thank you for reviewing Brew Buddy Cafe!");
+            this.reset();
+            ratingHint.textContent = "Select stars";
+            charCount.textContent = "0 / 300";
+        });
+
+        displayReviews();
+
+        (function initMotion() {
+            var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (prefersReduced) return;
+
+            var beansContainer = document.getElementById("beansContainer");
+            var bgLayer = document.getElementById("bgLayer");
+
+            var beanCount = 12;
+            var beans = [];
+
+            for (var i = 0; i < beanCount; i++) {
+                var el = document.createElement("span");
+                el.className = "bean";
+                var size = 12 + Math.random() * 8;
+                el.style.width = size + "px";
+                el.style.height = (size * 1.5) + "px";
+                beansContainer.appendChild(el);
+
+                beans.push({
+                    el: el,
+                    x: Math.random() * 100,
+                    y: Math.random() * 110 - 10,
+                    speed: 0.045 + Math.random() * 0.055,
+                    swayOffset: Math.random() * Math.PI * 2,
+                    swaySpeed: 0.0015 + Math.random() * 0.0015,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() > 0.5 ? 1 : -1) * (0.3 + Math.random() * 0.6),
+                    maxOpacity: 0.22 + Math.random() * 0.22
+                });
+            }
+
+            var mouseX = 0;
+            var mouseY = 0;
+            var currentBgX = 0;
+            var currentBgY = 0;
+
+            document.addEventListener("mousemove", function(e) {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+            });
+
+            document.addEventListener("mouseleave", function() {
+                mouseX = 0;
+                mouseY = 0;
+            });
+
+            var lastTime = performance.now();
+
+            function animate(now) {
+                var dt = Math.min(now - lastTime, 50);
+                lastTime = now;
+
+                currentBgX += (-mouseX * 16 - currentBgX) * 0.06;
+                currentBgY += (-mouseY * 16 - currentBgY) * 0.06;
+                if (bgLayer) {
+                    bgLayer.style.transform = "translate3d(" + currentBgX.toFixed(2) + "px, " + currentBgY.toFixed(2) + "px, 0)";
+                }
+
+                for (var j = 0; j < beans.length; j++) {
+                    var b = beans[j];
+                    b.y += b.speed * (dt / 16.67);
+                    b.rot += b.rotSpeed * (dt / 16.67);
+
+                    if (b.y > 108) {
+                        b.y = -8;
+                        b.x = Math.random() * 100;
+                    }
+
+                    var sway = Math.sin(now * b.swaySpeed + b.swayOffset) * 14;
+                    var fade = 1;
+                    if (b.y < 10) fade = Math.max(0, b.y / 10);
+                    else if (b.y > 90) fade = Math.max(0, (108 - b.y) / 18);
+
+                    var opacity = (b.maxOpacity * fade).toFixed(3);
+                    var pxX = (b.x / 100) * window.innerWidth + sway;
+                    var pxY = (b.y / 100) * window.innerHeight;
+
+                    b.el.style.opacity = opacity;
+                    b.el.style.transform = "translate3d(" + pxX.toFixed(1) + "px, " + pxY.toFixed(1) + "px, 0) rotate(" + b.rot.toFixed(1) + "deg)";
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        })();
+    </script>
+
+</body>
+
+</html>

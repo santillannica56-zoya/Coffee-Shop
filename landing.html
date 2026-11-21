@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew Buddy Cafe | Home & Menu</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            background: #24160e;
+            color: #302219;
+            overflow-x: hidden;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: -24px;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: transform 0.25s ease-out;
+        }
+
+        .bg-layer img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(56%) contrast(1.06);
+            transform: scale(1.04);
+            animation: slowKenBurns 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowKenBurns {
+            0% {
+                transform: scale(1.03) translate3d(0, 0, 0);
+            }
+            100% {
+                transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+            }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(
+                circle at center,
+                rgba(24, 14, 8, 0.44) 0%,
+                rgba(18, 10, 5, 0.86) 100%
+            );
+        }
+
+        .beans {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bean {
+            position: absolute;
+            top: -50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9a6946, #3b2215);
+            box-shadow: inset 0 1px 2px rgba(255, 225, 190, 0.25);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .bean::after {
+            content: "";
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            top: 15%;
+            left: 40%;
+            border-radius: 50%;
+            background: #c59b74;
+            transform: rotate(10deg);
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 20px;
+            left: 28px;
+            right: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            padding: 6px 16px 6px 8px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+        .brand-pill:hover {
+            background: rgba(65, 41, 26, 0.92);
+            transform: translateY(-1px);
+        }
+
+        .brand-pill img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 30px;
+            transition: 0.25s ease;
+        }
+
+        .navigation a:hover,
+        .navigation a.active {
+            background: rgba(243, 236, 227, 0.96);
+            color: #38251b;
+            transform: translateY(-1px);
+        }
+
+        .navigation a.cart-pill {
+            background: rgba(240, 207, 169, 0.95);
+            color: #2b1a10;
+            border-color: #f0cfa9;
+        }
+
+        .navigation a.cart-pill:hover {
+            background: #fff;
+            color: #2b1a10;
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 5;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 110px 24px 60px;
+        }
+
+        .hero-box {
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #eadfd3;
+            border-radius: 22px;
+            padding: 36px 38px;
+            box-shadow: 0 24px 55px rgba(12, 6, 3, 0.52);
+            margin-bottom: 48px;
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #805638;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .brand-label span {
+            width: 22px;
+            height: 1px;
+            background: #b58d6b;
+        }
+
+        .hero-content {
+            max-width: 680px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(32px, 4.5vw, 50px);
+            line-height: 1.15;
+            color: #39271d;
+            margin-bottom: 12px;
+            letter-spacing: -0.6px;
+        }
+
+        .hero-content h1 span {
+            color: #765237;
+        }
+
+        .hero-content p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #624e41;
+            margin-bottom: 20px;
+        }
+
+        .user-badge {
+            display: inline-block;
+            background: #f3ece3;
+            color: #563923;
+            border: 1px solid #d8c6b4;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: #563923;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 0.6px;
+            transition: 0.25s ease;
+        }
+
+        .hero-btn:hover {
+            background: #38251b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(56, 37, 27, 0.25);
+        }
+
+        .hero-btn-soft {
+            display: inline-block;
+            background: #f3ece3;
+            color: #563923;
+            border: 1px solid #bca58f;
+            padding: 13px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+        .hero-btn-soft:hover {
+            background: #e9dfd3;
+            transform: translateY(-2px);
+        }
+
+        .content-section {
+            margin-bottom: 52px;
+        }
+
+        .section-heading {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 26px;
+        }
+
+        .section-heading h2 {
+            color: #f0cfa9;
+            font-size: clamp(28px, 3.6vw, 36px);
+            margin-bottom: 6px;
+            text-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
+        }
+
+        .section-heading p {
+            color: #e6d7c8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .bestsellers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .bestseller-card {
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #eadfd3;
+            border-radius: 18px;
+            padding: 18px 20px 22px;
+            box-shadow: 0 18px 40px rgba(12, 6, 3, 0.45);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .bestseller-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 50px rgba(12, 6, 3, 0.6);
+        }
+
+        .bestseller-img-box {
+            position: relative;
+            width: 100%;
+            height: 175px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: #f3ece3;
+            border: 1px solid #e3d9cf;
+        }
+
+        .bestseller-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+
+        .bestseller-card:hover .bestseller-img-box img {
+            transform: scale(1.05);
+        }
+
+        .bestseller-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .rank-badge {
+            background: #563923;
+            color: #fff6ec;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 5px 11px;
+            border-radius: 20px;
+        }
+
+        .sold-pill {
+            display: inline-block;
+            background: #f3ece3;
+            color: #765237;
+            font-size: 11.5px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .bestseller-card h3 {
+            font-size: 18px;
+            color: #39271d;
+            margin-bottom: 10px;
+        }
+
+        .bestseller-action-row {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e9dfd5;
+        }
+
+        .bestseller-price {
+            font-size: 15px;
+            font-weight: bold;
+            color: #563923;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .category-btn {
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.72);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+        .category-btn:hover {
+            background: rgba(243, 236, 227, 0.85);
+            color: #38251b;
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: #f0cfa9;
+            color: #2b1a10;
+            border-color: #f0cfa9;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .product-card {
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #eadfd3;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 40px rgba(12, 6, 3, 0.42);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 24px 50px rgba(12, 6, 3, 0.58);
+        }
+
+        .product-img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 11;
+            height: 225px;
+            background: #efe6dc;
+            overflow: hidden;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.04);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(42, 26, 16, 0.82);
+            backdrop-filter: blur(6px);
+            color: #f0cfa9;
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .product-info {
+            padding: 18px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-info h3 {
+            color: #39271d;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .product-info p {
+            font-size: 13px;
+            color: #6e5a4d;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #e9dfd5;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #563923;
+        }
+
+        .add-btn {
+            background: #563923;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+        .add-btn:hover {
+            background: #38251b;
+            transform: translateY(-2px);
+        }
+
+        .glass-card {
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #eadfd3;
+            border-radius: 20px;
+            padding: 30px 34px;
+            box-shadow: 0 24px 55px rgba(12, 6, 3, 0.52);
+        }
+
+        .cart-box {
+            max-width: 960px;
+            margin: auto;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid #e9dfd5;
+        }
+
+        .cart-item h3 {
+            color: #39271d;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .cart-item p {
+            color: #7c685a;
+            font-size: 13px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-controls span {
+            font-weight: bold;
+            color: #39271d;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .quantity-controls button,
+        .remove-btn {
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-weight: bold;
+            transition: 0.2s ease;
+        }
+
+        .quantity-controls button {
+            background: #563923;
+            color: white;
+        }
+
+        .quantity-controls button:hover {
+            background: #38251b;
+        }
+
+        .remove-btn {
+            background: #f8e4e2;
+            color: #b3261e;
+            margin-top: 6px;
+        }
+
+        .remove-btn:hover {
+            background: #f0cfcc;
+        }
+
+        .cart-subtotal {
+            color: #563923;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #7c685a;
+            padding: 26px;
+        }
+
+        .empty-cart h3 {
+            color: #39271d;
+            margin-bottom: 6px;
+        }
+
+        .cart-summary {
+            text-align: right;
+            margin-top: 22px;
+        }
+
+        .cart-summary h2 {
+            color: #39271d;
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .checkout-btn {
+            background: #563923;
+            color: white;
+            padding: 13px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            transition: 0.25s ease;
+        }
+
+        .checkout-btn:hover {
+            background: #38251b;
+            transform: translateY(-2px);
+        }
+
+        #checkout {
+            display: none;
+            max-width: 780px;
+            margin: 26px auto 0;
+        }
+
+        #checkout h2 {
+            color: #39271d;
+            font-size: 24px;
+            margin-bottom: 14px;
+        }
+
+        .order-type-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .order-type-btn {
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #d8c6b4;
+            background: #f3ece3;
+            color: #563923;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .order-type-btn:hover {
+            background: #e9dfd3;
+        }
+
+        .order-type-btn.active {
+            background: #563923;
+            color: #fff;
+            border-color: #563923;
+        }
+
+        .form-row-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #493629;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e3d9cf;
+            border-radius: 8px;
+            outline: none;
+            font-size: 13.5px;
+            font-family: Arial, sans-serif;
+            background: #fff;
+            color: #39271d;
+            transition: 0.25s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #805638;
+            box-shadow: 0 0 0 3px rgba(128, 86, 56, 0.12);
+        }
+
+        #paymentInfo {
+            background: #f3ece3;
+            border: 1px solid #e3d9cf;
+            padding: 14px 16px;
+            border-radius: 8px;
+            color: #563923;
+            font-size: 13.5px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 14px;
+            background: #563923;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13.5px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.25s ease;
+        }
+
+        .place-order-btn:hover {
+            background: #38251b;
+            transform: translateY(-2px);
+        }
+
+        .reviews {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .review-card {
+            background: rgba(255, 253, 249, 0.94);
+            backdrop-filter: blur(10px);
+            border: 1px solid #eadfd3;
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 16px 35px rgba(12, 6, 3, 0.35);
+            transition: transform 0.25s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stars {
+            color: #c9881a;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .review-card p {
+            color: #624e41;
+            line-height: 1.65;
+            margin-bottom: 14px;
+            font-size: 13.5px;
+        }
+
+        .review-card h3 {
+            color: #39271d;
+            font-size: 16px;
+        }
+
+        .review-meta {
+            display: block;
+            margin-top: 4px;
+            font-size: 11.5px;
+            color: #8c7768;
+        }
+
+        .about-banner {
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 235, 210, 0.22);
+            border-radius: 20px;
+            padding: 36px;
+            text-align: center;
+            color: #fff6ec;
+            box-shadow: 0 20px 45px rgba(12, 6, 3, 0.45);
+        }
+
+        .about-banner h2 {
+            color: #f0cfa9;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .about-banner p {
+            max-width: 720px;
+            margin: 0 auto 14px;
+            line-height: 1.75;
+            color: #e6d7c8;
+            font-size: 14.5px;
+        }
+
+        .about-btn {
+            display: inline-block;
+            background: #f0cfa9;
+            color: #2b1a10;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 6px;
+            transition: 0.25s ease;
+        }
+
+        .about-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .page-footer {
+            text-align: center;
+            margin-top: 32px;
+            color: rgba(240, 207, 169, 0.75);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .menu-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bestsellers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-img-wrap {
+                height: 200px;
+            }
+
+            .reviews {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .top-bar {
+                position: fixed;
+                top: 10px;
+                left: 12px;
+                right: 12px;
+                flex-direction: column;
+                gap: 8px;
+                padding: 0;
+            }
+
+            .brand-pill {
+                padding: 5px 14px 5px 7px;
+                font-size: 13px;
+            }
+
+            .brand-pill img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .navigation {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            .navigation a {
+                padding: 7px 11px;
+                font-size: 11px;
+            }
+
+            .page-wrapper {
+                padding-top: 128px;
+            }
+
+            .hero-box {
+                padding: 28px 22px;
+            }
+
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+
+            .product-img-wrap {
+                height: 225px;
+            }
+
+            .glass-card {
+                padding: 20px;
+            }
+
+            .order-type-toggle,
+            .form-row-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .cart-summary {
+                text-align: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+<body>
+    <div class="bg-layer" id="bgLayer">
+        <img src="img1.jpg" alt="Brew Buddy Cafe Background">
+    </div>
+    <div class="bg-overlay"></div>
+    <div class="beans" id="beansContainer"></div>
+
+    <header class="top-bar">
+        <a href="home.html" class="brand-pill">
+            <img src="logo1-removebg-preview.png" alt="Brew Buddy Logo">
+            <span>Brew Buddy Cafe</span>
+        </a>
+
+        <nav class="navigation" aria-label="Primary Navigation">
+            <a href="#menu" class="active">Menu</a>
+            <a href="#cart" class="cart-pill">Cart (<span id="cartCount">0</span>)</a>
+            <a href="review.html">Reviews</a>
+            <a href="about.html">About</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+
+    <main class="page-wrapper">
+
+        <section class="hero-box" id="home">
+            <div class="hero-content">
+                <div class="brand-label">
+                    <span></span>
+                    BREW BUDDY CAFE
+                    <span></span>
+                </div>
+                <div class="user-badge" id="welcomeUserBadge" style="display: none;"></div>
+                <h1>Good Coffee,<br><span>Good Moments.</span></h1>
+                <p>
+                    Welcome to Brew Buddy Cafe! Enjoy freshly prepared coffee, refreshing drinks, and delicious snacks made to brighten your day.
+                </p>
+                <div class="hero-actions">
+                    <a href="#best-sellers" class="hero-btn">Best Sellers</a>
+                    <a href="#menu" class="hero-btn-soft">Go to Menu</a>
+                    <a href="#cart" class="hero-btn-soft">View Cart</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="best-sellers">
+            <div class="section-heading">
+                <h2>Best Sellers</h2>
+                <p>Automatically ranked from the most ordered items by our customers.</p>
+            </div>
+
+            <div class="bestsellers-grid" id="bestSellersGrid">
+                <div class="bestseller-card">
+                    <div class="bestseller-img-box">
+                        <img id="homeTop1Img" src="img1.jpg" alt="No orders yet">
+                    </div>
+                    <div class="bestseller-top">
+                        <span class="rank-badge">#1 Best Seller</span>
+                        <span class="sold-pill" id="homeTop1Sold">0 ordered</span>
+                    </div>
+                    <h3 id="homeTop1Name">No orders yet</h3>
+                    <div class="bestseller-action-row">
+                        <span class="bestseller-price" id="homeTop1Price">₱0.00</span>
+                        <button type="button" class="add-btn" id="homeTop1AddBtn" style="display:none;">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="bestseller-card">
+                    <div class="bestseller-img-box">
+                        <img id="homeTop2Img" src="img2.webp" alt="No orders yet">
+                    </div>
+                    <div class="bestseller-top">
+                        <span class="rank-badge">#2 Best Seller</span>
+                        <span class="sold-pill" id="homeTop2Sold">0 ordered</span>
+                    </div>
+                    <h3 id="homeTop2Name">No orders yet</h3>
+                    <div class="bestseller-action-row">
+                        <span class="bestseller-price" id="homeTop2Price">₱0.00</span>
+                        <button type="button" class="add-btn" id="homeTop2AddBtn" style="display:none;">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="bestseller-card">
+                    <div class="bestseller-img-box">
+                        <img id="homeTop3Img" src="img1.jpg" alt="No orders yet">
+                    </div>
+                    <div class="bestseller-top">
+                        <span class="rank-badge">#3 Best Seller</span>
+                        <span class="sold-pill" id="homeTop3Sold">0 ordered</span>
+                    </div>
+                    <h3 id="homeTop3Name">No orders yet</h3>
+                    <div class="bestseller-action-row">
+                        <span class="bestseller-price" id="homeTop3Price">₱0.00</span>
+                        <button type="button" class="add-btn" id="homeTop3AddBtn" style="display:none;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="menu">
+            <div class="section-heading">
+                <h2>Our Menu</h2>
+                <p>Discover your new favorite drink and snack, then add it straight to your cart.</p>
+            </div>
+
+            <div class="categories">
+                <button type="button" class="category-btn active" onclick="filterMenu('Desserts', this)">Desserts</button>
+                <button type="button" class="category-btn" onclick="filterMenu('Coffee', this)">Coffee</button>
+                <button type="button" class="category-btn" onclick="filterMenu('Frappe', this)">Frappe</button>
+                <button type="button" class="category-btn" onclick="filterMenu('Tea', this)">Tea</button>
+                <button type="button" class="category-btn" onclick="filterMenu('Waffles', this)">Waffles</button>
+                <button type="button" class="category-btn" onclick="filterMenu('Pastries', this)">Pastries</button>
+                <button type="button" class="category-btn" onclick="filterMenu('Sandwich', this)">Sandwich</button>
+            </div>
+
+            <div class="menu-container" id="menuContainer"></div>
+        </section>
+
+        <section class="content-section" id="cart">
+            <div class="section-heading">
+                <h2>My Shopping Cart</h2>
+                <p>Check your selected items before placing your order.</p>
+            </div>
+
+            <div class="glass-card cart-box">
+                <div id="cartItems">
+                    <div class="empty-cart">
+                        <h3>Your cart is empty.</h3>
+                        <p>Add something delicious from our menu!</p>
+                    </div>
+                </div>
+
+                <div class="cart-summary">
+                    <h2 id="cartTotal">Total: ₱0.00</h2>
+                    <button type="button" class="checkout-btn" onclick="showCheckout()">
+                        PROCEED TO CHECKOUT
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card" id="checkout">
+                <h2>Checkout Information</h2>
+
+                <div class="order-type-toggle" role="group" aria-label="Order Type">
+                    <button type="button" class="order-type-btn active" id="btnOnlineOrder" onclick="selectOrderType('Online Delivery')">
+                        🛵 Online Order (Delivery)
+                    </button>
+                    <button type="button" class="order-type-btn" id="btnDineInOrder" onclick="selectOrderType('Dine-In')">
+                        🍽️ Dine-In (Table Order)
+                    </button>
+                </div>
+
+                <form id="orderForm">
+                    <input type="hidden" id="orderType" value="Online Delivery">
+
+                    <div class="form-group">
+                        <label for="customerName">Full Name</label>
+                        <input type="text" id="customerName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerEmail">Email Address</label>
+                        <input type="email" id="customerEmail" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerPhone">Contact Number</label>
+                        <input type="tel" id="customerPhone" placeholder="Enter your contact number" required>
+                    </div>
+
+                    <div id="dineInSection" style="display: none;">
+                        <div class="form-row-grid">
+                            <div class="form-group">
+                                <label for="tableNumber">Table Number</label>
+                                <select id="tableNumber">
+                                    <option value="">Select Table</option>
+                                    <option value="Table 01">Table 01</option>
+                                    <option value="Table 02">Table 02</option>
+                                    <option value="Table 03">Table 03</option>
+                                    <option value="Table 04">Table 04</option>
+                                    <option value="Table 05 (Window)">Table 05 (Window)</option>
+                                    <option value="Table 06 (Couch)">Table 06 (Couch)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="guestCount">Number of Guests</label>
+                                <input type="number" id="guestCount" min="1" max="20" value="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="deliverySection">
+                        <div class="form-group">
+                            <label for="customerAddress">Delivery Address</label>
+                            <textarea id="customerAddress" rows="3" placeholder="Enter your complete address" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" onchange="showPaymentInfo()" required>
+                            <option value="">Select Payment Method</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Online Bank Transfer">Online Bank Transfer</option>
+                            <option value="GCash">GCash</option>
+                            <option value="MariBank">MariBank</option>
+                        </select>
+                    </div>
+
+                    <div id="paymentInfo">
+                        Please select your preferred payment method.
+                    </div>
+
+                    <h3 id="checkoutTotal" style="color:#563923; margin-bottom:20px;">
+                        Order Total: ₱0.00
+                    </h3>
+
+                    <button type="submit" class="place-order-btn" id="placeOrderBtn">
+                        PLACE ONLINE ORDER
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="content-section" id="reviews">
+            <div class="section-heading">
+                <h2>Customer Reviews</h2>
+                <p>Live feedback automatically shown as customers and users leave reviews.</p>
+            </div>
+
+            <div class="reviews" id="reviewsContainer"></div>
+        </section>
+
+        <section class="content-section" id="about">
+            <div class="about-banner">
+                <h2>About Brew Buddy Cafe</h2>
+                <p>
+                    Brew Buddy Cafe is a cozy coffee shop created for people who love good coffee, delicious food, and meaningful moments. We aim to make every visit enjoyable through our drinks, snacks, and welcoming cafe experience.
+                </p>
+                <p>
+                    Whether you need a refreshing drink, a quick snack, or a relaxing coffee break, Brew Buddy Cafe is always ready to serve you.
+                </p>
+                <a href="about.html" class="about-btn">Learn More</a>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            MADE WITH CARE AT BREW BUDDY CAFE • © 2026 ALL RIGHTS RESERVED
+        </footer>
+
+    </main>
+
+    <script>
+        const SUPABASE_URL = "https://owtnvtvnkoidnctugpnw.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_DyMeJn5BJx012b_2ailLfw_hYmxr_sX";
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let products = [];
+        let cart = [];
+        let currentMenuCategory = "Desserts";
+
+        function formatPeso(amount) {
+            return "₱" + Number(amount || 0).toLocaleString("en-PH", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function normalizeName(name) {
+            return String(name || "")
+                .replace(/\([^)]*\)/g, "")
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, " ");
+        }
+
+        function findProductByName(name) {
+            const norm = normalizeName(name);
+            return products.find(p => normalizeName(p.name) === norm) ||
+                   products.find(p => normalizeName(p.name).includes(norm) || norm.includes(normalizeName(p.name)));
+        }
+
+        async function loadInventoryFromSupabase() {
+            const container = document.getElementById("menuContainer");
+            const { data, error } = await sb
+                .from("products")
+                .select("*")
+                .order("id", { ascending: true });
+
+            if (error) {
+                console.error("Failed to load products from Supabase:", error);
+                if (container) {
+                    container.innerHTML = `<p style="color:#f0cfa9;grid-column:1/-1;text-align:center;">Unable to load menu: ${error.message}</p>`;
+                }
+                return;
+            }
+
+            products = (data || []).map(row => ({
+                id: row.id,
+                name: row.name,
+                category: row.category,
+                description: row.description || "Freshly prepared at Brew Buddy Cafe.",
+                price: Number(row.price || 0),
+                stock: Number(row.stock ?? 0),
+                is_available: row.is_available !== false && Number(row.stock ?? 0) > 0,
+                image: row.image || "img1.jpg"
+            }));
+
+            renderMenu(currentMenuCategory);
+            renderCart();
+            renderHomeBestSellers();
+        }
+
+        function renderMenu(category) {
+            if (category) currentMenuCategory = category;
+            const container = document.getElementById("menuContainer");
+            if (!container) return;
+
+            const filtered = currentMenuCategory
+                ? products.filter(item => String(item.category || "").toLowerCase() === currentMenuCategory.toLowerCase())
+                : products;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="color:#f0cfa9;grid-column:1/-1;text-align:center;">No items available in ${currentMenuCategory}.</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => {
+                const outOfStock = !item.is_available || item.stock <= 0;
+                return `
+                <article class="product-card">
+                    <div class="product-img-wrap">
+                        <span class="category-badge">${item.category}</span>
+                        <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='img1.jpg';">
+                    </div>
+                    <div class="product-info">
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <div class="product-bottom">
+                            <span class="price">${formatPeso(item.price)}</span>
+                            <button
+                                type="button"
+                                class="add-btn"
+                                ${outOfStock ? "disabled" : ""}
+                                onclick="addToCart(${item.id})"
+                            >
+                                ${outOfStock ? "Out of Stock" : "Add to Cart"}
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+            }).join("");
+        }
+
+        function filterMenu(category, btnEl) {
+            document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
+            if (btnEl) btnEl.classList.add("active");
+            renderMenu(category);
+        }
+
+        function addToCart(productId) {
+            const prod = products.find(p => Number(p.id) === Number(productId));
+            if (!prod || !prod.is_available || prod.stock <= 0) return;
+
+            const existing = cart.find(item => Number(item.id) === Number(prod.id));
+            const currentQty = existing ? existing.qty : 0;
+
+            if (currentQty + 1 > prod.stock) {
+                alert(`Sorry, ${prod.name} has limited availability right now.`);
+                return;
+            }
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({
+                    id: prod.id,
+                    name: prod.name,
+                    price: prod.price,
+                    image: prod.image,
+                    qty: 1
+                });
+            }
+            renderCart();
+        }
+
+        function changeQty(productId, delta) {
+            const target = cart.find(item => item.id === productId);
+            const prod = products.find(p => Number(p.id) === Number(productId));
+            if (!target) return;
+
+            const nextQty = target.qty + delta;
+            if (delta > 0 && prod && nextQty > prod.stock) {
+                alert(`Sorry, you've reached the maximum available quantity for ${target.name}.`);
+                return;
+            }
+
+            target.qty = nextQty;
+            if (target.qty <= 0) {
+                cart = cart.filter(item => item.id !== productId);
+            }
+            renderCart();
+        }
+
+        function removeItem(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItemsEl = document.getElementById("cartItems");
+            const cartCountEl = document.getElementById("cartCount");
+            const cartTotalEl = document.getElementById("cartTotal");
+            const checkoutTotalEl = document.getElementById("checkoutTotal");
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            if (cartCountEl) cartCountEl.textContent = totalQty;
+            if (cartTotalEl) cartTotalEl.textContent = "Total: " + formatPeso(totalPrice);
+            if (checkoutTotalEl) checkoutTotalEl.textContent = "Order Total: " + formatPeso(totalPrice);
+
+            if (!cartItemsEl) return;
+
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = `
+                    <div class="empty-cart">
+                        <h3>Your cart is empty.</h3>
+                        <p>Add something delicious from our menu!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            cartItemsEl.innerHTML = cart.map(item => {
+                const live = products.find(p => Number(p.id) === Number(item.id));
+                const maxStock = Number(live ? live.stock : 0);
+
+                return `
+                <div class="cart-item">
+                    <div>
+                        <h3>${item.name}</h3>
+                        <p>${formatPeso(item.price)} each</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button type="button" onclick="changeQty(${item.id}, -1)">-</button>
+                        <span>${item.qty}</span>
+                        <button type="button" ${Number(item.qty) >= maxStock ? "disabled" : ""} onclick="changeQty(${item.id}, 1)">+</button>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="cart-subtotal">${formatPeso(item.price * item.qty)}</div>
+                        <button type="button" class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                    </div>
+                </div>
+            `;
+            }).join("");
+        }
+
+        function showCheckout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty! Please add items first.");
+                return;
+            }
+            const checkoutEl = document.getElementById("checkout");
+            if (checkoutEl) {
+                checkoutEl.style.display = "block";
+                checkoutEl.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        function selectOrderType(type) {
+            const orderTypeInput = document.getElementById("orderType");
+            const btnOnline = document.getElementById("btnOnlineOrder");
+            const btnDineIn = document.getElementById("btnDineInOrder");
+            const deliverySection = document.getElementById("deliverySection");
+            const dineInSection = document.getElementById("dineInSection");
+            const addressInput = document.getElementById("customerAddress");
+            const placeOrderBtn = document.getElementById("placeOrderBtn");
+
+            if (orderTypeInput) orderTypeInput.value = type;
+
+            if (type === "Dine-In") {
+                btnDineIn?.classList.add("active");
+                btnOnline?.classList.remove("active");
+                if (deliverySection) deliverySection.style.display = "none";
+                if (dineInSection) dineInSection.style.display = "block";
+                if (addressInput) addressInput.required = false;
+                if (placeOrderBtn) placeOrderBtn.textContent = "PLACE DINE-IN ORDER";
+            } else {
+                btnOnline?.classList.add("active");
+                btnDineIn?.classList.remove("active");
+                if (deliverySection) deliverySection.style.display = "block";
+                if (dineInSection) dineInSection.style.display = "none";
+                if (addressInput) addressInput.required = true;
+                if (placeOrderBtn) placeOrderBtn.textContent = "PLACE ONLINE ORDER";
+            }
+        }
+
+        function showPaymentInfo() {
+            const method = document.getElementById("paymentMethod")?.value || "";
+            const infoBox = document.getElementById("paymentInfo");
+            if (!infoBox) return;
+
+            const map = {
+                "Cash": "Pay in cash upon delivery or at the counter for Dine-In orders.",
+                "Online Bank Transfer": "Bank Transfer: BPI / BDO — Brew Buddy Cafe (Acc: 0012-3456-78).",
+                "GCash": "GCash: 0917-123-4567 — Brew Buddy Cafe. Please keep your reference number.",
+                "MariBank": "MariBank Transfer: Brew Buddy Cafe — Ref: BREWBUDDY2026."
+            };
+
+            infoBox.textContent = map[method] || "Please select your preferred payment method.";
+        }
+
+        function recordSoldItemsToStorage(orderedItems) {
+            const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+            existingOrders.push({
+                id: "ORD-" + Date.now(),
+                createdAt: new Date().toISOString(),
+                items: orderedItems.map(i => ({
+                    id: i.id,
+                    name: i.name,
+                    qty: i.qty,
+                    price: i.price,
+                    image: i.image
+                }))
+            });
+            localStorage.setItem("orders", JSON.stringify(existingOrders));
+
+            const soldMap = JSON.parse(localStorage.getItem("soldItems") || "{}");
+            orderedItems.forEach(item => {
+                const key = normalizeName(item.name);
+                if (!soldMap[key]) {
+                    soldMap[key] = {
+                        name: item.name,
+                        qty: 0,
+                        image: item.image || ""
+                    };
+                }
+                soldMap[key].qty += Number(item.qty || 1);
+                if (item.image) soldMap[key].image = item.image;
+            });
+            localStorage.setItem("soldItems", JSON.stringify(soldMap));
+
+            window.dispatchEvent(new Event("brewBuddySalesUpdated"));
+        }
+
+        function renderHomeBestSellers() {
+            const slots = [
+                { imgId: "homeTop1Img", nameId: "homeTop1Name", soldId: "homeTop1Sold", priceId: "homeTop1Price", btnId: "homeTop1AddBtn", fallbackImg: "img1.jpg" },
+                { imgId: "homeTop2Img", nameId: "homeTop2Name", soldId: "homeTop2Sold", priceId: "homeTop2Price", btnId: "homeTop2AddBtn", fallbackImg: "img2.webp" },
+                { imgId: "homeTop3Img", nameId: "homeTop3Name", soldId: "homeTop3Sold", priceId: "homeTop3Price", btnId: "homeTop3AddBtn", fallbackImg: "img1.jpg" }
+            ];
+
+            const totals = {};
+            const names = {};
+            const images = {};
+
+            function addCount(nameVal, qtyVal, imgVal) {
+                if (!nameVal) return;
+                const key = normalizeName(nameVal);
+                const qty = Number(qtyVal);
+                if (!key || isNaN(qty) || qty <= 0) return;
+
+                if (!totals[key]) {
+                    totals[key] = 0;
+                    names[key] = String(nameVal).trim();
+                }
+                totals[key] += qty;
+                if (imgVal && String(imgVal).trim()) {
+                    images[key] = String(imgVal).trim();
+                }
+            }
+
+            function scanSource(raw) {
+                if (!raw) return;
+                try {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        parsed.forEach(entry => {
+                            if (!entry || typeof entry !== "object") return;
+                            if (Array.isArray(entry.items)) {
+                                entry.items.forEach(sub => {
+                                    addCount(sub.name || sub.item || sub.product, sub.qty || sub.quantity || 1, sub.image || sub.img);
+                                });
+                            } else if (entry.name || entry.item || entry.product) {
+                                addCount(
+                                    entry.name || entry.item || entry.product,
+                                    entry.qty ?? entry.quantity ?? entry.sold ?? entry.count ?? 1,
+                                    entry.image || entry.img || entry.photo
+                                );
+                            }
+                        });
+                    } else if (parsed && typeof parsed === "object") {
+                        Object.keys(parsed).forEach(k => {
+                            const val = parsed[k];
+                            if (typeof val === "number") {
+                                addCount(k, val, "");
+                            } else if (val && typeof val === "object") {
+                                addCount(val.name || k, val.qty ?? val.quantity ?? val.sold ?? val.count ?? 1, val.image || val.img);
+                            }
+                        });
+                    }
+                } catch (e) {
+                    // Ignore invalid JSON
+                }
+            }
+
+            ["orders", "sales", "soldItems", "orderHistory", "purchases", "transactions", "brewBuddyOrders"].forEach(key => {
+                scanSource(localStorage.getItem(key));
+            });
+
+            const ranked = Object.keys(totals)
+                .map(k => ({
+                    key: k,
+                    name: names[k],
+                    sold: totals[k],
+                    image: images[k]
+                }))
+                .sort((a, b) => b.sold - a.sold);
+
+            slots.forEach((slot, idx) => {
+                const imgEl = document.getElementById(slot.imgId);
+                const nameEl = document.getElementById(slot.nameId);
+                const soldEl = document.getElementById(slot.soldId);
+                const priceEl = document.getElementById(slot.priceId);
+                const btnEl = document.getElementById(slot.btnId);
+                const item = ranked[idx];
+
+                if (item && item.sold > 0) {
+                    const matchedProd = findProductByName(item.name);
+                    const chosenImg = item.image || (matchedProd ? matchedProd.image : slot.fallbackImg);
+
+                    if (imgEl) {
+                        imgEl.alt = item.name;
+                        imgEl.onerror = function () {
+                            this.onerror = null;
+                            if (matchedProd && matchedProd.image && this.src.indexOf(matchedProd.image) === -1) {
+                                this.src = matchedProd.image;
+                            } else {
+                                this.src = slot.fallbackImg;
+                            }
+                        };
+                        imgEl.src = chosenImg;
+                    }
+                    if (nameEl) nameEl.textContent = item.name;
+                    if (soldEl) soldEl.textContent = item.sold + (item.sold === 1 ? " ordered" : " ordered");
+                    if (priceEl) priceEl.textContent = matchedProd ? formatPeso(matchedProd.price) : "";
+                    if (btnEl) {
+                        if (matchedProd) {
+                            const outOfStock = !matchedProd.is_available || matchedProd.stock <= 0;
+                            btnEl.style.display = "inline-block";
+                            btnEl.disabled = outOfStock;
+                            btnEl.textContent = outOfStock ? "Out of Stock" : "Add to Cart";
+                            btnEl.onclick = function () { addToCart(matchedProd.id); };
+                        } else {
+                            btnEl.style.display = "none";
+                        }
+                    }
+                } else {
+                    if (imgEl) {
+                        imgEl.onerror = null;
+                        imgEl.src = slot.fallbackImg;
+                        imgEl.alt = "No orders yet";
+                    }
+                    if (nameEl) nameEl.textContent = "No orders yet";
+                    if (soldEl) soldEl.textContent = "0 ordered";
+                    if (priceEl) priceEl.textContent = "";
+                    if (btnEl) btnEl.style.display = "none";
+                }
+            });
+        }
+
+        document.getElementById("orderForm")?.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert("Your cart is empty.");
+                return;
+            }
+
+            const orderType = document.getElementById("orderType")?.value || "Online Delivery";
+            const customerName = document.getElementById("customerName")?.value.trim() || "";
+            const paymentMethod = document.getElementById("paymentMethod")?.value || "";
+
+            try {
+                for (const item of cart) {
+                    const { error } = await sb.rpc("decrement_stock", {
+                        p_product_id: Number(item.id),
+                        p_qty: Number(item.qty)
+                    });
+                    if (error) throw error;
+                }
+
+                recordSoldItemsToStorage(cart);
+                await loadInventoryFromSupabase();
+
+                alert(`Thank you, ${customerName || "Brew Buddy"}! Your ${orderType} order via ${paymentMethod} has been placed.`);
+
+                cart = [];
+                renderCart();
+                this.reset();
+                showPaymentInfo();
+                const checkoutBox = document.getElementById("checkout");
+                if (checkoutBox) checkoutBox.style.display = "none";
+            } catch (err) {
+                console.error(err);
+                alert("Order failed: " + (err.message || "Insufficient stock"));
+                await loadInventoryFromSupabase();
+            }
+        });
+
+        window.addEventListener("storage", renderHomeBestSellers);
+        window.addEventListener("focus", () => {
+            loadInventoryFromSupabase();
+            renderHomeBestSellers();
+        });
+        window.addEventListener("brewBuddySalesUpdated", renderHomeBestSellers);
+
+        renderCart();
+        renderHomeBestSellers();
+        loadInventoryFromSupabase();
+    </script>
+</body>
+
+</html>
