@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <title>Brew Buddy Cafe | About Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html,
+        body {
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            background: #24160e;
+            color: #302219;
+            overflow-x: hidden;
+        }
+
+
+        .bg-layer {
+            position: fixed;
+            inset: -24px;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transition: transform 0.25s ease-out;
+        }
+
+
+        .bg-layer img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(58%) contrast(1.06);
+            transform: scale(1.04);
+            animation: slowKenBurns 24s ease-in-out infinite alternate;
+        }
+
+
+        @keyframes slowKenBurns {
+            0% {
+                transform: scale(1.03) translate3d(0, 0, 0);
+            }
+            100% {
+                transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+            }
+        }
+
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(
+                circle at center,
+                rgba(24, 14, 8, 0.42) 0%,
+                rgba(18, 10, 5, 0.85) 100%
+            );
+        }
+
+
+        .beans {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+
+        .bean {
+            position: absolute;
+            top: -50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9a6946, #3b2215);
+            box-shadow: inset 0 1px 2px rgba(255, 225, 190, 0.25);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+
+        .bean::after {
+            content: "";
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            top: 15%;
+            left: 40%;
+            border-radius: 50%;
+            background: #c59b74;
+            transform: rotate(10deg);
+        }
+
+
+        .top-bar {
+            position: fixed;
+            top: 16px;
+            left: 28px;
+            right: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+        }
+
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            padding: 6px 16px 6px 8px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.25s ease;
+        }
+
+
+        .brand-pill:hover {
+            background: rgba(65, 41, 26, 0.92);
+            transform: translateY(-1px);
+        }
+
+
+        .brand-pill img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        .navigation a {
+            text-decoration: none;
+            color: #fff6ec;
+            background: rgba(42, 26, 16, 0.75);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 235, 210, 0.25);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 30px;
+            transition: 0.25s ease;
+        }
+
+
+        .navigation a:hover,
+        .navigation a.active {
+            background: rgba(243, 236, 227, 0.96);
+            color: #38251b;
+            transform: translateY(-1px);
+        }
+
+
+        .page-wrapper {
+            position: relative;
+            z-index: 5;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 110px 24px 60px;
+        }
+
+
+        .about-hero {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 45px;
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+
+        .brand-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #f0cfa9;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+
+        .brand-label span {
+            width: 26px;
+            height: 1px;
+            background: #f0cfa9;
+        }
+
+
+        .about-hero h1 {
+            font-size: clamp(32px, 4.5vw, 52px);
+            line-height: 1.15;
+            margin-bottom: 14px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+
+        .about-hero p {
+            max-width: 640px;
+            margin: 0 auto;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #efe4d8;
+        }
+
+
+        .story-card {
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #eadfd3;
+            border-radius: 22px;
+            padding: 36px 40px;
+            box-shadow: 0 24px 55px rgba(12, 6, 3, 0.52);
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 32px;
+            align-items: center;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            animation: fadeUp 0.85s ease-out both;
+        }
+
+
+        .story-tag {
+            display: inline-block;
+            background: #f3ece3;
+            color: #765237;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+
+
+        .story-text h2 {
+            font-size: 28px;
+            color: #39271d;
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+        }
+
+
+        .story-text p {
+            font-size: 14px;
+            line-height: 1.75;
+            color: #624e41;
+            margin-bottom: 14px;
+        }
+
+
+        .story-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid #e9dfd5;
+        }
+
+
+        .stat-box h3 {
+            font-size: 22px;
+            color: #563923;
+            margin-bottom: 3px;
+        }
+
+
+        .stat-box span {
+            font-size: 11px;
+            color: #948477;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+
+        .stat-sub {
+            display: block;
+            font-size: 11px;
+            color: #805638;
+            margin-top: 2px;
+        }
+
+
+        .story-visual {
+            background: linear-gradient(145deg, #4b3120, #2b1a10);
+            border-radius: 16px;
+            padding: 28px 24px;
+            color: #fff6ec;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(240, 207, 169, 0.2);
+        }
+
+
+        .story-visual img {
+            width: 84px;
+            height: 84px;
+            object-fit: contain;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+        }
+
+
+        .story-visual h3 {
+            font-size: 19px;
+            color: #f0cfa9;
+            margin-bottom: 10px;
+        }
+
+
+        .story-visual p {
+            font-size: 13px;
+            line-height: 1.65;
+            color: #e6d7c8;
+            font-style: italic;
+        }
+
+
+        .section-heading {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+            animation: fadeUp 0.95s ease-out both;
+        }
+
+
+        .section-heading h2 {
+            font-size: 28px;
+            color: #f0cfa9;
+            margin-bottom: 6px;
+            text-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
+        }
+
+
+        .section-heading p {
+            font-size: 13.5px;
+            color: #e6d7c8;
+        }
+
+
+        .bestsellers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 36px;
+            animation: fadeUp 1s ease-out both;
+        }
+
+
+        .bestseller-card {
+            background: rgba(255, 253, 249, 0.94);
+            backdrop-filter: blur(10px);
+            border: 1px solid #eadfd3;
+            border-radius: 18px;
+            padding: 20px 22px 24px;
+            box-shadow: 0 16px 35px rgba(12, 6, 3, 0.35);
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+
+        .bestseller-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 45px rgba(12, 6, 3, 0.48);
+        }
+
+
+        .bestseller-img-box {
+            position: relative;
+            width: 100%;
+            height: 165px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: #f3ece3;
+            border: 1px solid #e3d9cf;
+        }
+
+
+        .bestseller-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+
+
+        .bestseller-card:hover .bestseller-img-box img {
+            transform: scale(1.05);
+        }
+
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+
+        .bestseller-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #f3ece3;
+            color: #563923;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 1px solid #e3d9cf;
+        }
+
+
+        .rank-badge {
+            background: #563923;
+            color: #fff6ec;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 5px 11px;
+            border-radius: 20px;
+        }
+
+
+        .bestseller-card h3 {
+            font-size: 18px;
+            color: #39271d;
+            margin-bottom: 6px;
+        }
+
+
+        .sold-pill {
+            display: inline-block;
+            margin-top: 8px;
+            background: #f3ece3;
+            color: #765237;
+            font-size: 11.5px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+
+        .cta-banner {
+            background: rgba(42, 26, 16, 0.78);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 235, 210, 0.22);
+            border-radius: 20px;
+            padding: 30px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            color: #fff6ec;
+            animation: fadeUp 1.1s ease-out both;
+        }
+
+
+        .cta-banner h3 {
+            font-size: 22px;
+            margin-bottom: 6px;
+            color: #f0cfa9;
+        }
+
+
+        .cta-banner p {
+            font-size: 13.5px;
+            color: #e6d7c8;
+        }
+
+
+        .cta-actions {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+
+        .btn-primary {
+            text-decoration: none;
+            background: #f0cfa9;
+            color: #2b1a10;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 13px 24px;
+            border-radius: 10px;
+            transition: 0.25s ease;
+        }
+
+
+        .btn-primary:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+
+        .btn-outline {
+            text-decoration: none;
+            border: 1px solid rgba(240, 207, 169, 0.5);
+            color: #fff6ec;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 13px 22px;
+            border-radius: 10px;
+            transition: 0.25s ease;
+        }
+
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+
+        .page-footer {
+            text-align: center;
+            margin-top: 32px;
+            color: rgba(240, 207, 169, 0.75);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @media (max-width: 860px) {
+            .story-card {
+                grid-template-columns: 1fr;
+                padding: 28px 24px;
+            }
+
+
+            .bestsellers-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .cta-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+            .top-bar {
+                position: fixed;
+                top: 10px;
+                left: 12px;
+                right: 12px;
+                flex-direction: column;
+                gap: 8px;
+                padding: 0;
+            }
+
+
+            .brand-pill {
+                padding: 5px 14px 5px 7px;
+                font-size: 13px;
+            }
+
+
+            .brand-pill img {
+                width: 24px;
+                height: 24px;
+            }
+
+
+            .navigation {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 6px;
+            }
+
+
+            .navigation a {
+                padding: 7px 11px;
+                font-size: 11px;
+            }
+
+
+            .page-wrapper {
+                padding-top: 128px;
+            }
+
+
+            .story-stats {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+
+            .cta-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+    <div class="bg-layer" id="bgLayer">
+        <img src="img1.jpg" alt="Brew Buddy Cafe Background">
+    </div>
+    <div class="bg-overlay"></div>
+    <div class="beans" id="beansContainer"></div>
+
+
+    <header class="top-bar">
+        <a href="home.html" class="brand-pill">
+            <img src="logo1-removebg-preview.png" alt="Brew Buddy Logo">
+            <span>Brew Buddy Cafe</span>
+        </a>
+
+
+        <nav class="navigation" aria-label="Primary Navigation">
+            <a href="home.html"class="active">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="review.html">Reviews</a>
+            <a href="about.html">About Us</a>
+            <a href="login.html">Log In</a>
+        </nav>
+    </header>
+
+
+    <main class="page-wrapper">
+
+
+        <section class="about-hero">
+            <div class="brand-label">
+                <span></span>
+                OUR STORY &amp; PASSION
+                <span></span>
+            </div>
+            <h1>Crafted for Coffee Lovers,<br>Built for Good Company.</h1>
+            <p>
+                Every cup at Brew Buddy Cafe starts with ethically sourced beans, slow roasting, and a cozy space where friends, students, and dreamers feel right at home.
+            </p>
+        </section>
+
+
+        <section class="story-card" id="storyCard">
+            <div class="story-text">
+                <span class="story-tag">Since Day One</span>
+                <h2>More Than Just Your Daily Caffeine Fix</h2>
+                <p>
+                    Brew Buddy Cafe began with a simple idea: great coffee should never feel rushed or intimidating. Whether you are powering through study notes, catching up with old friends, or taking a quiet break, we brew every cup to match your pace.
+                </p>
+                <p>
+                    From velvety lattes to bold cold brews and freshly baked pastries, our baristas treat every order with care and consistency.
+                </p>
+
+
+                <div class="story-stats">
+                    <div class="stat-box">
+                        <h3>Daily</h3>
+                        <span>Freshly Brewed</span>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Warm</h3>
+                        <span>Cozy Vibe</span>
+                    </div>
+                    <div class="stat-box">
+                        <h3 id="buddyRating">0.0 ★</h3>
+                        <span>Buddy Rating</span>
+                        <small class="stat-sub" id="buddyReviewCount">No reviews yet</small>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="story-visual">
+                <img src="logo1-removebg-preview.png" alt="Brew Buddy Emblem">
+                <h3>Our Promise</h3>
+                <p>
+                    "To serve warmth in every mug, welcome every guest like a lifelong friend, and keep the aroma of fresh coffee alive all day."
+                </p>
+            </div>
+        </section>
+
+
+        <div class="section-heading">
+            <h2>Best Sellers</h2>
+            <p>Based on the most purchased items by our Brew Buddies</p>
+        </div>
+
+
+        <section class="bestsellers-grid" id="bestSellersGrid">
+            <div class="bestseller-card">
+                <div class="bestseller-img-box">
+                    <img id="topItem1Img" src="img1.jpg" alt="No sales data yet">
+                </div>
+                <div class="card-top-row">
+                    <div class="bestseller-icon">☕</div>
+                    <span class="rank-badge">#1 Best Seller</span>
+                </div>
+                <h3 id="topItem1Name">No sales data yet</h3>
+                <span class="sold-pill" id="topItem1Sold">0 sold</span>
+            </div>
+
+
+            <div class="bestseller-card">
+                <div class="bestseller-img-box">
+                    <img id="topItem2Img" src="img2.webp" alt="No sales data yet">
+                </div>
+                <div class="card-top-row">
+                    <div class="bestseller-icon">🤎</div>
+                    <span class="rank-badge">#2 Best Seller</span>
+                </div>
+                <h3 id="topItem2Name">No sales data yet</h3>
+                <span class="sold-pill" id="topItem2Sold">0 sold</span>
+            </div>
+
+
+            <div class="bestseller-card">
+                <div class="bestseller-img-box">
+                    <img id="topItem3Img" src="img1.jpg" alt="No sales data yet">
+                </div>
+                <div class="card-top-row">
+                    <div class="bestseller-icon">✨</div>
+                    <span class="rank-badge">#3 Best Seller</span>
+                </div>
+                <h3 id="topItem3Name">No sales data yet</h3>
+                <span class="sold-pill" id="topItem3Sold">0 sold</span>
+            </div>
+        </section>
+
+
+        <section class="cta-banner">
+            <div>
+                <h3>Ready for your next favorite cup?</h3>
+                <p>Explore our handcrafted drinks or share your review with the community.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="menu.html" class="btn-primary">Explore Menu</a>
+                <a href="review.html" class="btn-outline">Leave a Review</a>
+            </div>
+        </section>
+
+
+        <footer class="page-footer">
+            MADE WITH CARE AT BREW BUDDY CAFE • ALL RIGHTS RESERVED
+        </footer>
+
+
+    </main>
+
+
+    <script>
+        (function updateRatingFromReviews() {
+            var ratingEl = document.getElementById("buddyRating");
+            var countEl = document.getElementById("buddyReviewCount");
+            if (!ratingEl || !countEl) return;
+
+
+            var possibleKeys = ["reviews", "cafeReviews", "brewBuddyReviews", "customerReviews"];
+            var foundReviews = [];
+
+
+            for (var i = 0; i < possibleKeys.length; i++) {
+                try {
+                    var raw = localStorage.getItem(possibleKeys[i]);
+                    if (!raw) continue;
+                    var parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        foundReviews = parsed;
+                        break;
+                    }
+                } catch (err) {
+                    // Ignore invalid JSON entries
+                }
+            }
+
+
+            var validRatings = [];
+            for (var j = 0; j < foundReviews.length; j++) {
+                var item = foundReviews[j];
+                if (!item || typeof item !== "object") continue;
+                var rawScore = item.rating !== undefined ? item.rating : (item.stars !== undefined ? item.stars : item.score);
+                var numScore = Number(rawScore);
+                if (!isNaN(numScore) && numScore >= 1 && numScore <= 5) {
+                    validRatings.push(numScore);
+                }
+            }
+
+
+            if (validRatings.length === 0) {
+                ratingEl.textContent = "0.0 ★";
+                countEl.textContent = "No reviews yet";
+                return;
+            }
+
+
+            var sum = 0;
+            for (var k = 0; k < validRatings.length; k++) {
+                sum += validRatings[k];
+            }
+
+
+            var avg = (sum / validRatings.length).toFixed(1);
+            ratingEl.textContent = avg + " ★";
+            countEl.textContent = validRatings.length + (validRatings.length === 1 ? " review" : " reviews");
+        })();
+
+
+        (function initAutoBestSellers() {
+            var productImages = {
+                "coffee americano": ["cofee americano.jpg", "coffee americano.jpg"],
+                "americano": ["cofee americano.jpg", "coffee americano.jpg"],
+                "iced coffee": ["cofee americano.jpg", "iced coffee.jpg"],
+                "caramel macchiato": ["caramel macchiato.jpg"],
+                "cafe latte": ["cafe latte.png", "cafe latte.jpg"],
+                "cappuccino": ["cafe latte.png", "cappuccino.jpg"],
+                "mocha": ["mocha.jpg"],
+                "vanilla latte": ["vanilla latte.jfif", "vanilla latte.jpg", "cafe latte.png"],
+
+
+                "matcha cream frappe": [
+                    "matcha cream frappe.jpg",
+                    "matcha cream frappe.webp",
+                    "matcha cream frappe.png",
+                    "matcha frappe.jpg",
+                    "matcha latte.jpg",
+                    "java chip frappe.jpg"
+                ],
+                "java chip frappe": ["java chip frappe.jpg", "mocha.jpg"],
+                "cookies & cream frappe": ["cookies & cream frappe.jpg", "cookies and cream frappe.jpg"],
+                "strawberry vanilla frappe": ["strawberry vanilla frappe.jpg"],
+                "chocolate frappe": ["java chip frappe.jpg", "mocha.jpg"],
+                "caramel frappe": ["caramel macchiato.jpg"],
+
+
+                "tuna mayo melt": ["tuna mayo melt.jpg"],
+                "bacon, egg & cheese sandwich": ["bacon.jpg"],
+                "bacon egg cheese sandwich": ["bacon.jpg"],
+                "grilled cheese sandwich": ["grilled cheese sandwich.jpg"],
+                "chicken sandwich": ["grilled cheese sandwich.jpg", "tuna mayo melt.jpg"],
+                "ham and cheese": ["bacon.jpg", "grilled cheese sandwich.jpg"],
+
+
+                "classic waffle": ["classic waffle.jpg"],
+                "chocolate waffle": ["chocolate waffles.jpg", "chocolate waffle.jpg"],
+                "chocolate waffles": ["chocolate waffles.jpg", "chocolate waffle.jpg"],
+
+
+                "taro milk tea": ["taro milktea.jpg", "taro milk tea.jpg"],
+                "thai milk tea": ["thai milktea.jpg", "thai milk tea.jpg"],
+                "iced peach fruit tea": ["iced peach fruit tea.jpg"],
+                "lemon hibiscus tea": ["lemon hibiscus tea.jpg"],
+                "matcha latte": ["matcha cream frappe.jpg", "matcha latte.jpg"],
+                "milk tea": ["taro milktea.jpg", "thai milktea.jpg"],
+
+
+                "double chocolate muffin": ["double chocolate muffins.webp", "double chocolate muffin.jpg"],
+                "croissant": ["croissant.jpg"],
+                "palmier": ["palmier.jpeg", "palmier.jpg"],
+                "cinnamon roll": ["cinnamon rolls.png", "cinnamon roll.jpg"],
+                "cream puff": ["cream puff.jpeg", "cream puff.jpg"],
+                "blueberry muffin": ["blueberry muffin.jpg"],
+                "cheese ensaymada": ["cheese ensaymada.jpg"],
+
+
+                "chocolate cake": ["chocolate cake.jpg"],
+                "blueberry cheesecake": ["blueberry cheesecake.jpg"],
+                "brownies": ["brownies.jpg"],
+                "coconut cream dream bar": ["coconut cream dream bar.webp", "coconut cream dream bar.jpg"],
+                "cream dream pistachio": ["cream dream pistachio.jpg"],
+                "cookies": ["cookies.jpg"],
+                "strawberry chocolate cake": ["strawberry chocolate cake.webp", "strawberry chocolate cake.jpg"],
+                "classic cheese cake": ["classic cheese cake.jpg"],
+                "tiramisu": ["tiramisu.jpg"],
+                "choco lava cake": ["choco lava cake.jpg"],
+                "mango graham parfait": ["mango graham parfait.jpg"],
+                "affogato": ["affogato.jpg"]
+            };
+
+
+            var categoryKeywords = [
+                { word: "frappe", imgs: ["java chip frappe.jpg", "cookies & cream frappe.jpg", "strawberry vanilla frappe.jpg"] },
+                { word: "sandwich", imgs: ["tuna mayo melt.jpg", "bacon.jpg", "grilled cheese sandwich.jpg"] },
+                { word: "waffle", imgs: ["classic waffle.jpg", "chocolate waffles.jpg"] },
+                { word: "coffee", imgs: ["cofee americano.jpg", "caramel macchiato.jpg", "cafe latte.png", "mocha.jpg"] },
+                { word: "latte", imgs: ["cafe latte.png", "vanilla latte.jfif"] },
+                { word: "mocha", imgs: ["mocha.jpg"] },
+                { word: "tea", imgs: ["taro milktea.jpg", "thai milktea.jpg", "iced peach fruit tea.jpg", "lemon hibiscus tea.jpg"] }
+            ];
+
+
+            var salesKeys = [
+                "orders",
+                "sales",
+                "soldItems",
+                "orderHistory",
+                "purchases",
+                "transactions",
+                "brewBuddyOrders"
+            ];
+
+
+            var defaultSlots = [
+                { imgId: "topItem1Img", nameId: "topItem1Name", soldId: "topItem1Sold", emptyImg: "img1.jpg" },
+                { imgId: "topItem2Img", nameId: "topItem2Name", soldId: "topItem2Sold", emptyImg: "img2.webp" },
+                { imgId: "topItem3Img", nameId: "topItem3Name", soldId: "topItem3Sold", emptyImg: "img1.jpg" }
+            ];
+
+
+            var lastSnapshot = "";
+
+
+            function normalizeName(name) {
+                return String(name || "")
+                    .replace(/\([^)]*\)/g, "")
+                    .trim()
+                    .toLowerCase()
+                    .replace(/\s+/g, " ");
+            }
+
+
+            function getProductImageCandidates(itemName, customImg) {
+                var list = [];
+                if (customImg && typeof customImg === "string" && customImg.trim()) {
+                    list.push(customImg.trim());
+                }
+
+
+                var norm = normalizeName(itemName);
+                if (productImages[norm]) {
+                    list = list.concat(productImages[norm]);
+                } else {
+                    var keys = Object.keys(productImages);
+                    for (var i = 0; i < keys.length; i++) {
+                        if (norm.indexOf(keys[i]) !== -1 || keys[i].indexOf(norm) !== -1) {
+                            list = list.concat(productImages[keys[i]]);
+                            break;
+                        }
+                    }
+
+
+                    for (var c = 0; c < categoryKeywords.length; c++) {
+                        if (norm.indexOf(categoryKeywords[c].word) !== -1) {
+                            list = list.concat(categoryKeywords[c].imgs);
+                            break;
+                        }
+                    }
+                }
+
+
+                if (norm) {
+                    list.push(norm + ".jpg");
+                    list.push(norm + ".webp");
+                    list.push(norm + ".png");
+                }
+
+
+                list.push("img2.webp");
+                list.push("img1.jpg");
+                return list;
+            }
+
+
+            function setImgWithFallback(imgEl, candidates, altText, fallbackSrc) {
+                if (!imgEl) return;
+                var candidateKey = (candidates || []).join("|");
+                if (imgEl.dataset.appliedCandidates === candidateKey && imgEl.alt === altText) {
+                    return;
+                }
+                imgEl.dataset.appliedCandidates = candidateKey;
+                imgEl.alt = altText;
+
+
+                var idx = 0;
+                var finalFallback = fallbackSrc || "img1.jpg";
+
+
+                function tryNext() {
+                    if (idx >= candidates.length) {
+                        imgEl.onerror = null;
+                        imgEl.src = finalFallback;
+                        return;
+                    }
+                    var nextSrc = candidates[idx++];
+                    imgEl.onerror = tryNext;
+                    imgEl.src = nextSrc;
+                }
+
+
+                tryNext();
+            }
+
+
+            function readSalesSnapshot() {
+                var parts = [];
+                for (var i = 0; i < salesKeys.length; i++) {
+                    try {
+                        parts.push(salesKeys[i] + "=" + (localStorage.getItem(salesKeys[i]) || ""));
+                    } catch (e) {
+                        parts.push(salesKeys[i] + "=err");
+                    }
+                }
+                return parts.join("||");
+            }
+
+
+            function refreshBestSellers(force) {
+                var currentSnapshot = readSalesSnapshot();
+                if (!force && currentSnapshot === lastSnapshot) {
+                    return;
+                }
+                lastSnapshot = currentSnapshot;
+
+
+                var salesTotals = {};
+                var displayNames = {};
+                var itemCustomImages = {};
+
+
+                function addSaleEntry(nameVal, qtyVal, imgVal) {
+                    if (!nameVal || typeof nameVal !== "string") return;
+                    var cleanName = nameVal.trim();
+                    if (!cleanName) return;
+
+
+                    var normKey = normalizeName(cleanName);
+                    var qty = Number(qtyVal);
+                    if (isNaN(qty) || qty <= 0) qty = 1;
+
+
+                    if (!salesTotals[normKey]) {
+                        salesTotals[normKey] = 0;
+                        displayNames[normKey] = cleanName;
+                    }
+                    salesTotals[normKey] += qty;
+
+
+                    if (imgVal && typeof imgVal === "string" && imgVal.trim()) {
+                        itemCustomImages[normKey] = imgVal.trim();
+                    }
+                }
+
+
+                function inspectData(data) {
+                    if (!data) return;
+
+
+                    if (Array.isArray(data)) {
+                        for (var i = 0; i < data.length; i++) {
+                            var entry = data[i];
+                            if (!entry || typeof entry !== "object") continue;
+
+
+                            if (Array.isArray(entry.items)) {
+                                inspectData(entry.items);
+                                continue;
+                            }
+                            if (Array.isArray(entry.cart)) {
+                                inspectData(entry.cart);
+                                continue;
+                            }
+
+
+                            var itemName = entry.name || entry.item || entry.title || entry.product || entry.itemName;
+                            var itemQty = entry.qty !== undefined ? entry.qty :
+                                          (entry.quantity !== undefined ? entry.quantity :
+                                          (entry.sold !== undefined ? entry.sold :
+                                          (entry.count !== undefined ? entry.count : 1)));
+                            var itemImg = entry.image || entry.img || entry.photo || entry.thumbnail;
+
+
+                            addSaleEntry(itemName, itemQty, itemImg);
+                        }
+                    } else if (typeof data === "object") {
+                        var keys = Object.keys(data);
+                        for (var k = 0; k < keys.length; k++) {
+                            var keyName = keys[k];
+                            var val = data[keyName];
+                            if (typeof val === "number") {
+                                addSaleEntry(keyName, val, null);
+                            } else if (Array.isArray(val)) {
+                                inspectData(val);
+                            }
+                        }
+                    }
+                }
+
+
+                for (var s = 0; s < salesKeys.length; s++) {
+                    try {
+                        var rawSales = localStorage.getItem(salesKeys[s]);
+                        if (!rawSales) continue;
+                        var parsedSales = JSON.parse(rawSales);
+                        inspectData(parsedSales);
+                    } catch (err) {
+                        // Ignore invalid JSON entries
+                    }
+                }
+
+
+                var rankedItems = Object.keys(salesTotals)
+                    .map(function (normKey) {
+                        var label = displayNames[normKey];
+                        return {
+                            name: label,
+                            sold: salesTotals[normKey],
+                            candidates: getProductImageCandidates(label, itemCustomImages[normKey] || null)
+                        };
+                    })
+                    .sort(function (a, b) {
+                        return b.sold - a.sold;
+                    })
+                    .slice(0, 3);
+
+
+                for (var idx = 0; idx < defaultSlots.length; idx++) {
+                    var slot = defaultSlots[idx];
+                    var imgEl = document.getElementById(slot.imgId);
+                    var nameEl = document.getElementById(slot.nameId);
+                    var soldEl = document.getElementById(slot.soldId);
+                    if (!nameEl || !soldEl) continue;
+
+
+                    if (rankedItems[idx]) {
+                        var itemObj = rankedItems[idx];
+                        setImgWithFallback(imgEl, itemObj.candidates, itemObj.name, slot.emptyImg);
+                        nameEl.textContent = itemObj.name;
+                        soldEl.textContent = itemObj.sold + " sold";
+                    } else {
+                        if (imgEl) {
+                            imgEl.onerror = null;
+                            imgEl.src = slot.emptyImg;
+                            imgEl.alt = "No sales data yet";
+                        }
+                        nameEl.textContent = "No sales data yet";
+                        soldEl.textContent = "0 sold";
+                    }
+                }
+            }
+
+
+            refreshBestSellers(true);
+            window.addEventListener("storage", function () {
+                refreshBestSellers(false);
+            });
+            setInterval(function () {
+                refreshBestSellers(false);
+            }, 2500);
+        })();
+    </script>
+
+
+    <script>
+        (function initMotion() {
+            var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (prefersReduced) return;
+
+
+            var beansContainer = document.getElementById("beansContainer");
+            var bgLayer = document.getElementById("bgLayer");
+            var storyCard = document.getElementById("storyCard");
+
+
+            var beanCount = 14;
+            var beans = [];
+
+
+            for (var i = 0; i < beanCount; i++) {
+                var el = document.createElement("span");
+                el.className = "bean";
+                var size = 12 + Math.random() * 8;
+                el.style.width = size + "px";
+                el.style.height = (size * 1.5) + "px";
+                beansContainer.appendChild(el);
+
+
+                beans.push({
+                    el: el,
+                    x: Math.random() * 100,
+                    y: Math.random() * 110 - 10,
+                    speed: 0.045 + Math.random() * 0.055,
+                    swayOffset: Math.random() * Math.PI * 2,
+                    swaySpeed: 0.0015 + Math.random() * 0.0015,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() > 0.5 ? 1 : -1) * (0.3 + Math.random() * 0.6),
+                    maxOpacity: 0.22 + Math.random() * 0.22
+                });
+            }
+
+
+            var mouseX = 0;
+            var mouseY = 0;
+            var currentBgX = 0;
+            var currentBgY = 0;
+
+
+            document.addEventListener("mousemove", function (e) {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+
+
+                if (storyCard && window.innerWidth > 860) {
+                    var rect = storyCard.getBoundingClientRect();
+                    var insideX = e.clientX >= rect.left && e.clientX <= rect.right;
+                    var insideY = e.clientY >= rect.top && e.clientY <= rect.bottom;
+                    if (insideX && insideY) {
+                        var relX = ((e.clientX - rect.left) / rect.width) - 0.5;
+                        var relY = ((e.clientY - rect.top) / rect.height) - 0.5;
+                        storyCard.style.transform = "perspective(1000px) rotateX(" + (-relY * 3).toFixed(2) + "deg) rotateY(" + (relX * 3).toFixed(2) + "deg)";
+                    } else {
+                        storyCard.style.transform = "";
+                    }
+                }
+            });
+
+
+            document.addEventListener("mouseleave", function () {
+                mouseX = 0;
+                mouseY = 0;
+                if (storyCard) {
+                    storyCard.style.transform = "";
+                }
+            });
+
+
+            var lastTime = performance.now();
+
+
+            function animate(now) {
+                var dt = Math.min(now - lastTime, 50);
+                lastTime = now;
+
+
+                currentBgX += (-mouseX * 18 - currentBgX) * 0.06;
+                currentBgY += (-mouseY * 18 - currentBgY) * 0.06;
+                if (bgLayer) {
+                    bgLayer.style.transform = "translate3d(" + currentBgX.toFixed(2) + "px, " + currentBgY.toFixed(2) + "px, 0)";
+                }
+
+
+                for (var j = 0; j < beans.length; j++) {
+                    var b = beans[j];
+                    b.y += b.speed * (dt / 16.67);
+                    b.rot += b.rotSpeed * (dt / 16.67);
+
+
+                    if (b.y > 108) {
+                        b.y = -8;
+                        b.x = Math.random() * 100;
+                    }
+
+
+                    var sway = Math.sin(now * b.swaySpeed + b.swayOffset) * 14;
+                    var fade = 1;
+                    if (b.y < 10) fade = Math.max(0, b.y / 10);
+                    else if (b.y > 90) fade = Math.max(0, (108 - b.y) / 18);
+
+
+                    var opacity = (b.maxOpacity * fade).toFixed(3);
+                    var pxX = (b.x / 100) * window.innerWidth + sway;
+                    var pxY = (b.y / 100) * window.innerHeight;
+
+
+                    b.el.style.opacity = opacity;
+                    b.el.style.transform = "translate3d(" + pxX.toFixed(1) + "px, " + pxY.toFixed(1) + "px, 0) rotate(" + b.rot.toFixed(1) + "deg)";
+                }
+
+
+                requestAnimationFrame(animate);
+            }
+
+
+            requestAnimationFrame(animate);
+        })();
+    </script>
+
+
+</body>
+
+
+</html>
